@@ -1,0 +1,79 @@
+{
+  "cities": [
+    {
+      "id": "yangon",
+      "name": "仰光",
+      "nameEn": "Yangon",
+      "description": "缅甸最大的城市，经济中心，拥有著名的仰光大金塔",
+      "descriptionEn": "Myanmar's largest city and economic center, home to the famous Shwedagon Pagoda",
+      "coordinates": { "lat": 16.8661, "lng": 96.1951 },
+      "category": "spiritual",
+      "highlights": ["仰光大金塔", "苏雷塔", "茵雅湖", "殖民建筑"],
+      "highlightsEn": ["Shwedagon Pagoda", "Sule Pagoda", "Inya Lake", "Colonial Architecture"],
+      "image": "/images/cities/yangon.jpg",
+      "rating": 4.8,
+      "bestTimeToVisit": "11月-2月",
+      "bestTimeToVisitEn": "November - February"
+    },
+    {
+      "id": "bagan",
+      "name": "蒲甘",
+      "nameEn": "Bagan",
+      "description": "古老的王朝首都，拥有超过2000座佛塔和寺庙的考古奇迹",
+      "descriptionEn": "Ancient dynastic capital, archaeological wonder with over 2000 pagodas and temples",
+      "coordinates": { "lat": 21.1619, "lng": 94.8708 },
+      "category": "cultural",
+      "highlights": ["古老佛塔群", "热气球观光", "考古博物馆", "传统漆器"],
+      "highlightsEn": ["Ancient Pagoda Complex", "Hot Air Balloon Tours", "Archaeological Museum", "Traditional Lacquerware"],
+      "image": "/images/cities/bagan.jpg",
+      "rating": 4.9,
+      "bestTimeToVisit": "10月-3月",
+      "bestTimeToVisitEn": "October - March"
+    },
+    {
+      "id": "mandalay",
+      "name": "曼德勒",
+      "nameEn": "Mandalay",
+      "description": "缅甸最后王朝的古都，文化和宗教中心",
+      "descriptionEn": "Ancient capital of Myanmar's last dynasty, cultural and religious center",
+      "coordinates": { "lat": 21.9588, "lng": 96.0891 },
+      "category": "cultural",
+      "highlights": ["曼德勒皇宫", "曼德勒山", "马哈木尼佛塔", "传统手工艺"],
+      "highlightsEn": ["Mandalay Palace", "Mandalay Hill", "Mahamuni Pagoda", "Traditional Crafts"],
+      "image": "/images/cities/mandalay.jpg",
+      "rating": 4.5,
+      "bestTimeToVisit": "11月-2月",
+      "bestTimeToVisitEn": "November - February"
+    },
+    {
+      "id": "inle-lake",
+      "name": "茵莱湖",
+      "nameEn": "Inle Lake",
+      "description": "高原湖泊，以独特的水上生活方式和浮动花园闻名",
+      "descriptionEn": "Highland lake famous for unique water lifestyle and floating gardens",
+      "coordinates": { "lat": 20.5167, "lng": 96.9000 },
+      "category": "natural",
+      "highlights": ["独脚划船", "浮动花园", "水上市场", "传统织布"],
+      "highlightsEn": ["Leg Rowing", "Floating Gardens", "Water Market", "Traditional Weaving"],
+      "image": "/images/cities/inle.jpg",
+      "rating": 4.7,
+      "bestTimeToVisit": "10月-3月",
+      "bestTimeToVisitEn": "October - March"
+    },
+    {
+      "id": "ngapali",
+      "name": "额吉利海滩",
+      "nameEn": "Ngapali Beach",
+      "description": "缅甸最美丽的海滩度假胜地，拥有洁白沙滩和清澈海水",
+      "descriptionEn": "Myanmar's most beautiful beach resort destination with pristine white sand and crystal clear waters",
+      "coordinates": { "lat": 18.3167, "lng": 94.3167 },
+      "category": "natural",
+      "highlights": ["洁白沙滩", "海鲜美食", "日落美景", "水上运动"],
+      "highlightsEn": ["Pristine White Beach", "Fresh Seafood", "Sunset Views", "Water Sports"],
+      "image": "/images/cities/ngapali.jpg",
+      "rating": 4.6,
+      "bestTimeToVisit": "10月-4月",
+      "bestTimeToVisitEn": "October - April"
+    }
+  ]
+}

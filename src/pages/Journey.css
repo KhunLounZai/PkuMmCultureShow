@@ -1,0 +1,481 @@
+.journey-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.journey-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.journey-title {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.flight-info-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.flight-route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.city-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.city-info h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+}
+
+.city-info p {
+  margin: 5px 0 0 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.city-icon {
+  color: #4f46e5;
+}
+
+.destination-icon {
+  color: #f59e0b;
+}
+
+.flight-path {
+  flex: 2;
+  margin: 0 30px;
+  position: relative;
+}
+
+.flight-line {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.flight-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.airplane {
+  position: absolute;
+  top: -10px;
+  transform: translateX(-50%);
+  color: #4f46e5;
+  transition: left 0.3s ease;
+  z-index: 10;
+}
+
+.airplane.flying {
+  animation: fly 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes fly {
+  0% { transform: translateX(-50%) translateY(-2px); }
+  100% { transform: translateX(-50%) translateY(2px); }
+}
+
+.flight-details {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.progress-text {
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.map-container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  height: 500px;
+  position: relative;
+  overflow: hidden;
+}
+
+.leaflet-map {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  z-index: 1;
+}
+
+.map-background {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #fef3c7 100%);
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.china-region {
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  width: 200px;
+  height: 150px;
+  background: rgba(79, 70, 229, 0.1);
+  border-radius: 20px;
+  border: 2px dashed #4f46e5;
+}
+
+.myanmar-region {
+  position: absolute;
+  bottom: 20%;
+  right: 15%;
+  width: 180px;
+  height: 200px;
+  background: rgba(245, 158, 11, 0.1);
+  border-radius: 20px;
+  border: 2px dashed #f59e0b;
+}
+
+.beijing-marker, .destination-marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.marker-icon.start {
+  color: #4f46e5;
+}
+
+.marker-icon.destination {
+  color: #f59e0b;
+}
+
+.marker-label {
+  background: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.flight-route-line {
+  position: absolute;
+  top: 35%;
+  left: 25%;
+  right: 25%;
+  height: 3px;
+  background: rgba(156, 163, 175, 0.3);
+  transform: rotate(-15deg);
+  border-radius: 2px;
+}
+
+.route-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.destination-info {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.destination-card {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.destination-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.destination-content h2 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.destination-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.activities-section h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.activities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activities-list li {
+  background: #f8fafc;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border-left: 4px solid #4f46e5;
+  color: #333;
+}
+
+.journey-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.start-journey-btn, .reset-journey-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+}
+
+.start-journey-btn:hover, .reset-journey-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
+}
+
+.flying-status, .arrival-status {
+  text-align: center;
+  color: white;
+}
+
+.flying-animation, .arrival-animation {
+  font-size: 48px;
+  margin-bottom: 15px;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.flying-status p, .arrival-status p {
+  font-size: 18px;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.reset-journey-btn {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  margin-top: 15px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .journey-container {
+    padding: 15px;
+  }
+  
+  .journey-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .journey-title {
+    font-size: 22px;
+  }
+  
+  .flight-route {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .flight-path {
+    margin: 0;
+    order: 2;
+  }
+  
+  .destination-card {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .destination-image {
+    height: 150px;
+  }
+  
+  .flight-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .map-container {
+    height: 300px;
+  }
+  
+  .china-region, .myanmar-region {
+    width: 120px;
+    height: 100px;
+  }
+}
+
+/* 自定义Leaflet标记样式 */
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* 飞机标记样式 */
+.plane-marker-container {
+  z-index: 1000 !important;
+  position: relative !important;
+}
+
+.simple-plane {
+  font-size: 24px !important;
+  text-align: center !important;
+  line-height: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  background: #ff4444 !important;
+  border-radius: 50% !important;
+  border: 3px solid white !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  animation: planePulse 2s infinite !important;
+  transition: all 0.3s ease !important;
+}
+
+@keyframes planePulse {
+  0% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  }
+  50% { 
+    transform: scale(1.2); 
+    box-shadow: 0 6px 20px rgba(255,68,68,0.8);
+  }
+  100% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  }
+}
+
+/* Leaflet控件样式调整 */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-control-zoom a {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #333 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  margin: 2px !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+/* Leaflet弹窗样式 */
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 16px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 14px !important;
+  color: #333 !important;
+}

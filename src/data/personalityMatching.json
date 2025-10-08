@@ -1,0 +1,406 @@
+{
+  "mbtiMatching": {
+    "INTJ": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "description": "你是天生的战略家，曼德勒古都的深厚历史底蕴和皇宫建筑的精妙设计，将满足你对知识和完美的追求",
+      "activities": ["参观曼德勒皇宫", "探索古城墙", "学习传统工艺", "品味皇室文化"],
+      "image": "/images/cities/mandalay.jpg",
+      "personality": "建筑师"
+    },
+    "INTP": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "description": "你善于思考和分析，茵莱湖独特的水上生活方式和复杂的生态系统，将激发你无尽的好奇心和探索欲",
+      "activities": ["研究水上农业", "观察独脚划船", "探索浮岛村落", "学习传统渔业"],
+      "image": "/images/cities/inle.jpg",
+      "personality": "思想家"
+    },
+    "ENTJ": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "description": "你是天生的领导者，仰光作为经济中心的繁华活力和大金塔的雄伟气势，将与你的雄心壮志完美契合",
+      "activities": ["参观大金塔", "探索商业区", "体验都市文化", "品尝街头美食"],
+      "image": "/images/cities/yangon.jpg",
+      "personality": "指挥官"
+    },
+    "ENTP": {
+      "city": "额吉利海滩",
+      "cityEn": "Ngapali Beach",
+      "description": "你充满创新精神，额吉利海滩的自然美景和休闲氛围，将为你提供全新的视角和无限创意灵感",
+      "activities": ["海滩创意", "水上运动", "日落摄影", "休闲探索"],
+      "image": "/images/cities/ngapali.jpg",
+      "personality": "辩论家"
+    },
+    "INFJ": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "description": "你拥有深刻的洞察力，蒲甘万千佛塔承载的千年智慧和宁静氛围，将为你的心灵提供最深层的滋养",
+      "activities": ["冥想修行", "观赏日出日落", "学习佛教文化", "探索古迹"],
+      "image": "/images/cities/bagan.jpg",
+      "personality": "提倡者"
+    },
+    "INFP": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "description": "你细腻而富有想象力，蒲甘万千佛塔的宁静与日落的诗意，将是你灵魂的栖息地",
+      "activities": ["艺术创作", "静心冥想", "摄影采风", "文化体验"],
+      "image": "/images/cities/bagan.jpg",
+      "personality": "调停者"
+    },
+    "ENFJ": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "description": "你善于激励他人，曼德勒丰富的文化传统和热情的人民，将让你在帮助他人中找到最大的满足感",
+      "activities": ["文化交流", "社区服务", "传统学习", "人文关怀"],
+      "image": "/images/cities/mandalay.jpg",
+      "personality": "主人公"
+    },
+    "ENFP": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "description": "你热情洋溢充满活力，茵莱湖多彩的水上市场和独特的民族文化，将点燃你对生活的无限热情",
+      "activities": ["水上市场", "民族节庆", "手工艺学习", "自然探索"],
+      "image": "/images/cities/inle.jpg",
+      "personality": "竞选者"
+    },
+    "ISTJ": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "description": "你注重传统和秩序，曼德勒古都的皇宫建筑和深厚历史传统，体现了千年不变的文化传承，与你的价值观完美契合。",
+      "activities": ["皇宫参观", "传统工艺", "历史学习", "文化体验"],
+      "image": "/images/cities/mandalay.jpg",
+      "personality": "物流师"
+    },
+    "ISFJ": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "description": "你温和体贴，茵莱湖宁静的水面和温暖的水上社区，为你提供了一个充满关爱的温馨环境。",
+      "activities": ["水上社区", "传统织布", "自然观察", "宁静休憩"],
+      "image": "/images/cities/inle.jpg",
+      "personality": "守护者"
+    },
+    "ESTJ": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "description": "你务实高效，仰光作为商业中心的繁忙节奏和有序发展，将让你感受到城市的脉搏和活力。",
+      "activities": ["商务考察", "城市规划", "经济发展", "管理学习"],
+      "image": "/images/cities/yangon.jpg",
+      "personality": "总经理"
+    },
+    "ESFJ": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "description": "你关爱他人善于合作，仰光温暖的社区氛围和友善的人民，将让你感受到家的温暖。",
+      "activities": ["社区活动", "文化节庆", "传统美食", "人际交往"],
+      "image": "/images/cities/yangon.jpg",
+      "personality": "执政官"
+    },
+    "ISTP": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "description": "你独立自主喜欢实践，蒲甘古老的佛塔建筑和传统工艺，将满足你对技能和探索的追求。",
+      "activities": ["古塔探索", "传统工艺", "独立探索", "技能挑战"],
+      "image": "/images/cities/bagan.jpg",
+      "personality": "鉴赏家"
+    },
+    "ISFP": {
+      "city": "额吉利海滩",
+      "cityEn": "Ngapali Beach",
+      "description": "你温柔敏感富有艺术气质，额吉利海滩的自然美景和宁静氛围，将为你的创作灵感提供无尽源泉。",
+      "activities": ["海滩漫步", "艺术创作", "自然摄影", "宁静冥想"],
+      "image": "/images/cities/ngapali.jpg",
+      "personality": "探险家"
+    },
+    "ESTP": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "description": "你热爱冒险与挑战，仰光充满活力的街头生活、独特的殖民建筑和人间烟火，将点燃你的激情！",
+      "activities": ["街头探索", "美食冒险", "夜生活体验", "文化冲击"],
+      "image": "/images/cities/yangon.jpg",
+      "personality": "企业家"
+    },
+    "ESFP": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "description": "你热情开朗喜欢表演，曼德勒丰富的传统艺术和热闹的文化节庆，将为你提供展示才华的舞台。",
+      "activities": ["传统表演", "文化节庆", "艺术学习", "社交活动"],
+      "image": "/images/cities/mandalay.jpg",
+      "personality": "娱乐家"
+    }
+  },
+  "zodiacMatching": {
+    "白羊座": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "description": "充满冒险精神的你，最适合在蒲甘乘坐热气球，俯瞰万千佛塔的壮丽景象。",
+      "personality": "勇敢冒险",
+      "activities": ["热气球观光", "古塔探索", "日出摄影", "冒险体验"],
+      "image": "/images/cities/bagan.jpg"
+    },
+    "金牛座": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "description": "注重品质的你，会爱上茵莱湖精美的传统手工艺品和宁静的制作过程。",
+      "personality": "稳重艺术",
+      "activities": ["传统手工艺", "湖上泛舟", "浮动花园", "艺术创作"],
+      "image": "/images/cities/inle.jpg"
+    },
+    "双子座": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "description": "好奇心旺盛的你，最适合在仰光探索多元文化的碰撞与融合。",
+      "personality": "好奇多元",
+      "activities": ["文化探索", "街头漫步", "多元交流", "历史发现"],
+      "image": "/images/cities/yangon.jpg"
+    },
+    "巨蟹座": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "description": "重视家庭的你，会在曼德勒的传统家庭文化中找到温暖的归属感。",
+      "personality": "温暖传统",
+      "activities": ["家庭文化体验", "传统工艺", "皇宫参观", "文化传承"],
+      "image": "/images/cities/mandalay.jpg"
+    },
+    "狮子座": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "description": "追求荣耀的你，大金塔的金碧辉煌将满足你对壮丽和尊贵的向往。",
+      "personality": "荣耀领导",
+      "activities": ["大金塔朝圣", "宗教体验", "历史探索", "文化学习"],
+      "image": "/images/cities/yangon.jpg"
+    },
+    "处女座": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "description": "追求完美的你，会在曼德勒山的寺院中找到内心的宁静和精神的升华。",
+      "personality": "完美细致",
+      "activities": ["寺院修行", "精神升华", "冥想体验", "文化学习"],
+      "image": "/images/cities/mandalay.jpg"
+    },
+    "天秤座": {
+      "city": "额吉利海滩",
+      "cityEn": "Ngapali Beach",
+      "description": "追求美感的你，额吉利海滩的自然美景和优雅的海滨风光将深深吸引你。",
+      "personality": "美感平衡",
+      "activities": ["海滩漫步", "日落欣赏", "艺术体验", "优雅生活"],
+      "image": "/images/cities/ngapali.jpg"
+    },
+    "天蝎座": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "description": "神秘深沉的你，会被蒲甘古老佛塔中隐藏的历史秘密深深吸引。",
+      "personality": "神秘深度",
+      "activities": ["神秘探索", "历史发现", "古迹研究", "深度体验"],
+      "image": "/images/cities/bagan.jpg"
+    },
+    "射手座": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "description": "热爱自由的你，茵莱湖的山地徒步将带给你无限的自由和冒险体验。",
+      "personality": "自由冒险",
+      "activities": ["山地徒步", "自由探索", "户外冒险", "自然体验"],
+      "image": "/images/cities/inle.jpg"
+    },
+    "摩羯座": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "description": "注重传统的你，会在曼德勒皇宫的历史文化中找到深厚的底蕴。",
+      "personality": "传统责任",
+      "activities": ["皇宫历史", "传统文化", "历史学习", "文化传承"],
+      "image": "/images/cities/mandalay.jpg"
+    },
+    "水瓶座": {
+      "city": "额吉利海滩",
+      "cityEn": "Ngapali Beach",
+      "description": "前卫创新的你，额吉利海滩的自然环境将激发你对生活的无限想象和创新思维。",
+      "personality": "创新未来",
+      "activities": ["海滩创意", "水上运动", "自然探索", "创新体验"],
+      "image": "/images/cities/ngapali.jpg"
+    },
+    "双鱼座": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "description": "浪漫敏感的你，茵莱湖的浪漫日落将触动你内心最柔软的部分。",
+      "personality": "浪漫敏感",
+      "activities": ["日落冥想", "浪漫体验", "艺术创作", "心灵净化"],
+      "image": "/images/cities/inle.jpg"
+    }
+  },
+  "chineseZodiacMatching": {
+    "鼠": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "trait": "机智灵活",
+      "recommendation": "适合探索仰光的商业文化，发挥你的商业头脑",
+      "description": "机智灵活的你，仰光繁华的商业中心和多元文化将激发你的商业天赋。",
+      "activities": ["商业考察", "文化交流", "都市探索", "创业学习"],
+      "image": "/images/cities/yangon.jpg"
+    },
+    "牛": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "trait": "勤劳踏实",
+      "recommendation": "适合体验茵莱湖的传统农业，感受勤劳的美德",
+      "description": "勤劳踏实的你，茵莱湖的浮动花园和传统渔业将让你感受到劳动的美好。",
+      "activities": ["浮动花园", "传统渔业", "手工织布", "水上市场"],
+      "image": "/images/cities/inle.jpg"
+    },
+    "虎": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "trait": "勇猛威武",
+      "recommendation": "适合在蒲甘探索古老的王朝历史，展现你的王者风范",
+      "description": "勇猛威武的你，蒲甘万千佛塔的壮丽景象将彰显你的王者气质。",
+      "activities": ["热气球观光", "古塔探索", "历史学习", "摄影创作"],
+      "image": "/images/cities/bagan.jpg"
+    },
+    "兔": {
+      "city": "额吉利海滩",
+      "cityEn": "Ngapali Beach",
+      "trait": "温和善良",
+      "recommendation": "适合在额吉利海滩的宁静环境中享受祥和时光",
+      "description": "温和善良的你，额吉利海滩宁静的海滨环境将给你带来内心的平静",
+      "activities": ["海滩漫步", "日落观赏", "宁静冥想", "自然体验"],
+      "image": "/images/cities/ngapali.jpg"
+    },
+    "龙": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "trait": "尊贵威严",
+      "recommendation": "适合参观曼德勒皇宫，感受皇室的威严",
+      "description": "尊贵威严的你，曼德勒古都的皇宫建筑和深厚历史将彰显你的尊贵气质。",
+      "activities": ["皇宫参观", "传统工艺", "文化学习", "历史探索"],
+      "image": "/images/cities/mandalay.jpg"
+    },
+    "蛇": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "trait": "智慧神秘",
+      "recommendation": "适合在蒲甘探索古老的佛教智慧",
+      "description": "智慧神秘的你，蒲甘古老佛塔中蕴含的深邃智慧将与你的内在相呼应",
+      "activities": ["佛塔冥想", "古籍研读", "智慧探索", "精神修行"],
+      "image": "/images/cities/bagan.jpg"
+    },
+    "马": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "trait": "奔放自由",
+      "recommendation": "适合在茵莱湖享受自由奔放的水上生活",
+      "description": "奔放自由的你，茵莱湖开阔的水面和自由的水上生活将满足你对自由的渴望",
+      "activities": ["独脚划船", "湖上泛舟", "自由探索", "水上冒险"],
+      "image": "/images/cities/inle.jpg"
+    },
+    "羊": {
+      "city": "额吉利海滩",
+      "cityEn": "Ngapali Beach",
+      "trait": "温顺和谐",
+      "recommendation": "适合在额吉利海滩体验宁静和谐的海滨生活",
+      "description": "温顺和谐的你，额吉利海滩优美的自然环境将给你带来内心的和谐。",
+      "activities": ["海滩祈福", "海边休憩", "宁静漫步", "心灵净化"],
+      "image": "/images/cities/ngapali.jpg"
+    },
+    "猴": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "trait": "聪明活泼",
+      "recommendation": "适合在仰光体验多彩活泼的都市生活",
+      "description": "聪明活泼的你，仰光充满活力的街头文化和多元社会将激发你的创造力",
+      "activities": ["街头探索", "文化体验", "社交活动", "创意发现"],
+      "image": "/images/cities/yangon.jpg"
+    },
+    "鸡": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "trait": "勤奋准时",
+      "recommendation": "适合参与曼德勒的传统手工艺制作",
+      "description": "勤奋准时的你，曼德勒精湛的传统手工艺将让你感受到匠人精神的魅力。",
+      "activities": ["手工艺学习", "传统技艺", "工匠体验", "文化传承"],
+      "image": "/images/cities/mandalay.jpg"
+    },
+    "狗": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "trait": "忠诚可靠",
+      "recommendation": "适合在曼德勒体验深厚的文化传统和人文关怀",
+      "description": "忠诚可靠的你，曼德勒深厚的文化底蕴和温暖的人情味将让你感受到归属感。",
+      "activities": ["文化交流", "传统学习", "社区服务", "人文关怀"],
+      "image": "/images/cities/mandalay.jpg"
+    },
+    "猪": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "trait": "善良朴实",
+      "recommendation": "适合在茵莱湖享受朴实自然的水上生活",
+      "description": "善良朴实的你，茵莱湖纯朴的水上民族和自然的生活方式将让你回归本真",
+      "activities": ["水上生活", "民族文化", "自然体验", "朴实生活"],
+      "image": "/images/cities/inle.jpg"
+    }
+  },
+  "dayOfWeekMatching": {
+    "周一 🐅 老虎": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "trait": "勇猛领导",
+      "recommendation": "老虎般勇猛的你，适合在仰光这座充满活力的都市展现领导才能",
+      "description": "如老虎般勇猛果敢的你，仰光繁华的都市生活和大金塔的雄伟气势将激发你内在的王者风范",
+      "activities": ["参观大金塔", "商业区探索", "领导力体验", "都市文化"],
+      "image": "/images/cities/yangon.jpg"
+    },
+    "周二 🦁 狮子": {
+      "city": "曼德勒",
+      "cityEn": "Mandalay",
+      "trait": "威严王者",
+      "recommendation": "狮子般威严的你，适合在曼德勒古都感受皇室的尊贵与威严",
+      "description": "如狮子般威严高贵的你，曼德勒皇宫的庄严建筑和深厚的皇室文化将彰显你的王者气质",
+      "activities": ["参观曼德勒皇宫", "皇室文化体验", "古城探索", "传统工艺"],
+      "image": "/images/cities/mandalay.jpg"
+    },
+    "周三 🐘 象": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "trait": "智慧力量",
+      "recommendation": "大象般智慧的你，适合在蒲甘万千佛塔中感悟千年智慧",
+      "description": "如大象般智慧沉稳的你，蒲甘万千佛塔承载的佛教智慧和宁静氛围将滋养你的心灵",
+      "activities": ["佛塔冥想", "智慧学习", "文化探索", "心灵净化"],
+      "image": "/images/cities/bagan.jpg"
+    },
+    "周四 🐀 老鼠": {
+      "city": "茵莱湖",
+      "cityEn": "Inle Lake",
+      "trait": "机智灵活",
+      "recommendation": "老鼠般机智的你，适合在茵莱湖体验灵活多变的水上生活",
+      "description": "如老鼠般机智灵活的你，茵莱湖独特的水上文化和多样的生态环境将激发你的适应能力",
+      "activities": ["水上探索", "生态观察", "灵活体验", "文化学习"],
+      "image": "/images/cities/inle.jpg"
+    },
+    "周五 🐹 豚鼠": {
+      "city": "额吉利海滩",
+      "cityEn": "Ngapali Beach",
+      "trait": "温和可爱",
+      "recommendation": "豚鼠般温和的你，适合在额吉利海滩享受宁静温馨的海滨时光",
+      "description": "如豚鼠般温和可爱的你，额吉利海滩的柔软沙滩和温暖海风将带给你最舒适的放松体验",
+      "activities": ["海滩漫步", "温馨休憩", "海风沐浴", "宁静享受"],
+      "image": "/images/cities/ngapali.jpg"
+    },
+    "周六 🐉 龙": {
+      "city": "蒲甘",
+      "cityEn": "Bagan",
+      "trait": "神圣威严",
+      "recommendation": "龙般神圣的你，适合在蒲甘感受千年佛塔的神圣力量",
+      "description": "如龙般神圣威严的你，蒲甘万千佛塔的神圣氛围和千年历史将彰显你的非凡气质",
+      "activities": ["神圣朝拜", "历史探索", "威严体验", "文化传承"],
+      "image": "/images/cities/bagan.jpg"
+    },
+    "周日 🦅 人身鸟首": {
+      "city": "仰光",
+      "cityEn": "Yangon",
+      "trait": "神话传说",
+      "recommendation": "人身鸟首般神秘的你，适合在仰光探索神话与现实交融的奇妙世界",
+      "description": "如人身鸟首般神秘传奇的你，仰光丰富的宗教文化和神话传说将满足你对神秘力量的向往",
+      "activities": ["神话探索", "宗教文化", "传说体验", "神秘发现"],
+      "image": "/images/cities/yangon.jpg"
+    }
+  }
+}
+
