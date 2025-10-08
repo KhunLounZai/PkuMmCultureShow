@@ -134,6 +134,7 @@
   gap: 20px;
   padding-top: 20px;
   border-top: 1px solid #e5e7eb;
+  flex-wrap: wrap;
 }
 
 .detail-item {
@@ -144,9 +145,32 @@
   font-size: 14px;
 }
 
-.progress-text {
+.progress-text, .step-text {
   font-weight: bold;
   color: #4f46e5;
+}
+
+/* 实时位置显示面板 */
+.real-time-position {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  z-index: 1000;
+  min-width: 200px;
+}
+
+.real-time-position h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+.real-time-position p {
+  margin: 5px 0;
 }
 
 .map-container {
@@ -165,83 +189,6 @@
   height: 100%;
   border-radius: 15px;
   z-index: 1;
-}
-
-.map-background {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #fef3c7 100%);
-  border-radius: 15px;
-  position: relative;
-  overflow: hidden;
-}
-
-.china-region {
-  position: absolute;
-  top: 20%;
-  left: 15%;
-  width: 200px;
-  height: 150px;
-  background: rgba(79, 70, 229, 0.1);
-  border-radius: 20px;
-  border: 2px dashed #4f46e5;
-}
-
-.myanmar-region {
-  position: absolute;
-  bottom: 20%;
-  right: 15%;
-  width: 180px;
-  height: 200px;
-  background: rgba(245, 158, 11, 0.1);
-  border-radius: 20px;
-  border: 2px dashed #f59e0b;
-}
-
-.beijing-marker, .destination-marker {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-
-.marker-icon.start {
-  color: #4f46e5;
-}
-
-.marker-icon.destination {
-  color: #f59e0b;
-}
-
-.marker-label {
-  background: white;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: bold;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.flight-route-line {
-  position: absolute;
-  top: 35%;
-  left: 25%;
-  right: 25%;
-  height: 3px;
-  background: rgba(156, 163, 175, 0.3);
-  transform: rotate(-15deg);
-  border-radius: 2px;
-}
-
-.route-progress {
-  height: 100%;
-  background: linear-gradient(90deg, #4f46e5, #06b6d4);
-  border-radius: 2px;
-  transition: width 0.3s ease;
 }
 
 .destination-info {
@@ -339,6 +286,12 @@
   animation: bounce 1s ease-in-out infinite;
 }
 
+/* 飞行状态动画中的飞机图标旋转 */
+.flying-animation {
+  transform: rotate(225deg);
+  display: inline-block;
+}
+
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -346,13 +299,73 @@
 
 .flying-status p, .arrival-status p {
   font-size: 18px;
-  margin: 0;
+  margin: 5px 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .reset-journey-btn {
   background: linear-gradient(135deg, #f59e0b, #ef4444);
   margin-top: 15px;
+}
+
+/* 飞机图标方向调整 */
+.airplane-icon {
+  transform: rotate(225deg);
+  display: inline-block;
+}
+
+.airplane.flying .airplane-icon {
+  animation: flyRotated 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes flyRotated {
+  0% { transform: rotate(225deg) translateY(-2px); }
+  100% { transform: rotate(225deg) translateY(2px); }
+}
+
+/* 飞行状态动画中的飞机图标也需要旋转 */
+.flying-animation {
+  font-size: 48px;
+  margin-bottom: 15px;
+  animation: flyingBounce 1s ease-in-out infinite;
+  transform: rotate(225deg);
+  display: inline-block;
+}
+
+@keyframes flyingBounce {
+  0%, 100% { 
+    transform: rotate(225deg) translateY(0);
+  }
+  50% { 
+    transform: rotate(225deg) translateY(-10px);
+  }
+}
+
+/* 飞机标记动画 */
+@keyframes planePulse {
+  0% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 12px rgba(255,0,0,0.8);
+  }
+  50% { 
+    transform: scale(1.1); 
+    box-shadow: 0 6px 20px rgba(255,0,0,1);
+  }
+  100% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 12px rgba(255,0,0,0.8);
+  }
+}
+
+/* 自定义Leaflet标记样式 */
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.plane-marker {
+  background: transparent !important;
+  border: none !important;
 }
 
 /* 响应式设计 */
@@ -399,83 +412,10 @@
     height: 300px;
   }
   
-  .china-region, .myanmar-region {
-    width: 120px;
-    height: 100px;
+  .real-time-position {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-bottom: 20px;
   }
-}
-
-/* 自定义Leaflet标记样式 */
-.custom-marker {
-  background: transparent !important;
-  border: none !important;
-}
-
-/* 飞机标记样式 */
-.plane-marker-container {
-  z-index: 1000 !important;
-  position: relative !important;
-}
-
-.simple-plane {
-  font-size: 24px !important;
-  text-align: center !important;
-  line-height: 40px !important;
-  width: 40px !important;
-  height: 40px !important;
-  background: #ff4444 !important;
-  border-radius: 50% !important;
-  border: 3px solid white !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  animation: planePulse 2s infinite !important;
-  transition: all 0.3s ease !important;
-}
-
-@keyframes planePulse {
-  0% { 
-    transform: scale(1); 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  }
-  50% { 
-    transform: scale(1.2); 
-    box-shadow: 0 6px 20px rgba(255,68,68,0.8);
-  }
-  100% { 
-    transform: scale(1); 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  }
-}
-
-/* Leaflet控件样式调整 */
-.leaflet-control-zoom {
-  border: none !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
-}
-
-.leaflet-control-zoom a {
-  background: rgba(255, 255, 255, 0.9) !important;
-  color: #333 !important;
-  border: none !important;
-  border-radius: 8px !important;
-  margin: 2px !important;
-}
-
-.leaflet-control-zoom a:hover {
-  background: rgba(255, 255, 255, 1) !important;
-}
-
-/* Leaflet弹窗样式 */
-.leaflet-popup-content-wrapper {
-  border-radius: 12px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
-}
-
-.leaflet-popup-content {
-  margin: 12px 16px !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  font-size: 14px !important;
-  color: #333 !important;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Plane, MapPin, Clock, Navigation, ArrowLeft } from 'lucide-react';
 import L from 'leaflet';
@@ -28,25 +28,45 @@ const Journey: React.FC = () => {
   const [flightProgress, setFlightProgress] = useState(0);
   const [isFlying, setIsFlying] = useState(false);
   const [hasArrived, setHasArrived] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const flightPathRef = useRef<L.Polyline | null>(null);
   const planeMarkerRef = useRef<L.Marker | null>(null);
+  const stepIntervalRef = useRef<NodeJS.Timeout | null>(null);
   
   const journeyData = location.state as JourneyData;
 
+  // 城市名称标准化映射
+  const normalizeCity = (cityName: string): string => {
+    const cityMapping: Record<string, string> = {
+      '额吉利海滩': '额布里海滩'
+    };
+    return cityMapping[cityName] || cityName;
+  };
+
   // 计算真实地理数据
   const beijingCoords = getCityCoordinates('北京');
-  const destinationCoords = getCityCoordinates(journeyData?.city || '仰光');
+  const normalizedCity = normalizeCity(journeyData?.city || '仰光');
+  const destinationCoords = getCityCoordinates(normalizedCity);
   
   const distance = beijingCoords && destinationCoords 
     ? calculateDistance(beijingCoords.lat, beijingCoords.lng, destinationCoords.lat, destinationCoords.lng)
     : 0;
   
   const flightTime = calculateFlightTime(distance);
-  const flightPath = beijingCoords && destinationCoords 
-    ? generateFlightPath(beijingCoords.lat, beijingCoords.lng, destinationCoords.lat, destinationCoords.lng)
-    : [];
+  const flightPath = useMemo(() => {
+    if (beijingCoords && destinationCoords) {
+      return generateFlightPath(
+        beijingCoords.lat,
+        beijingCoords.lng,
+        destinationCoords.lat,
+        destinationCoords.lng,
+        50
+      );
+    }
+    return [];
+  }, [beijingCoords, destinationCoords]);
 
   // 如果没有数据，重定向到推荐页面
   useEffect(() => {
@@ -55,8 +75,10 @@ const Journey: React.FC = () => {
     }
   }, [journeyData, navigate]);
 
-  // 地图初始化
+  // 地图初始化useEffect
   useEffect(() => {
+    console.log('🗺️ 地图初始化开始');
+    
     // 清理之前的地图实例
     if (mapInstanceRef.current) {
       try {
@@ -86,6 +108,11 @@ const Journey: React.FC = () => {
           return;
         }
 
+        console.log('📍 坐标信息:');
+        console.log('- 北京:', beijingCoords);
+        console.log('- 目标城市:', normalizedCity, destinationCoords);
+        console.log('- 飞行路径点数:', flightPath.length);
+
         // 计算地图中心点
         const midpoint = calculateMidpoint(
           beijingCoords.lat, beijingCoords.lng,
@@ -96,58 +123,86 @@ const Journey: React.FC = () => {
         const map = L.map(container, {
           zoomControl: true,
           attributionControl: true,
-          preferCanvas: true // 使用Canvas渲染提高性能
+          preferCanvas: false, // 禁用canvas渲染器，使用SVG渲染器避免canvas错误
+          renderer: L.svg({ padding: 0.5 }) // 使用SVG渲染器替代canvas
         }).setView([midpoint.lat, midpoint.lng], 4);
 
-        // 添加地图瓦片，增强错误处理和重试机制
-        const tileUrls = [
-          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'
+        // 添加地图瓦片 - 使用多个备用瓦片源
+        const tileProviders = [
+          {
+            name: 'CartoDB Positron',
+            url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            options: {
+              attribution: '© OpenStreetMap contributors © CARTO',
+              subdomains: 'abcd',
+              maxZoom: 19
+            }
+          },
+          {
+            name: 'OpenStreetMap',
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            options: {
+              attribution: '© OpenStreetMap contributors',
+              maxZoom: 19
+            }
+          },
+          {
+            name: 'CartoDB Voyager',
+            url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+            options: {
+              attribution: '© OpenStreetMap contributors © CARTO',
+              subdomains: 'abcd',
+              maxZoom: 19
+            }
+          }
         ];
         
-        let currentTileIndex = 0;
-        let tileLayer: L.TileLayer;
-        
-        const createTileLayer = (urlIndex: number) => {
-          return L.tileLayer(tileUrls[urlIndex], {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 18,
+        let currentProviderIndex = 0;
+        let tileLayer: L.TileLayer | null = null;
+
+        const createTileLayer = (providerIndex: number) => {
+          const provider = tileProviders[providerIndex];
+          return L.tileLayer(provider.url, {
+            ...provider.options,
             minZoom: 2,
-            errorTileUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0iI2Y5ZjlmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE0IiBmaWxsPSIjY2NjIj7liqDovb3lpLHotKU8L3RleHQ+PC9zdmc+',
-            timeout: 8000,
-            retryDelay: 1000,
-            maxRetries: 2
+            errorTileUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0iI2Y0ZjRmNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM5OTkiPk1hcCBUaWxlPC90ZXh0Pjwvc3ZnPg==',
+            retryDelay: 2000,
+            retryLimit: 2
           });
         };
 
-        tileLayer = createTileLayer(currentTileIndex);
-
-        // 监听瓦片加载错误并实现重试机制
-        let errorCount = 0;
-        tileLayer.on('tileerror', (e: any) => {
-          console.warn(`瓦片加载失败 (${errorCount + 1}):`, e.tile.src);
-          errorCount++;
-          
-          // 如果错误过多，尝试切换到备用瓦片服务
-          if (errorCount > 5 && currentTileIndex < tileUrls.length - 1) {
-            console.log('切换到备用瓦片服务...');
+        const tryNextProvider = () => {
+          if (tileLayer) {
             map.removeLayer(tileLayer);
-            currentTileIndex++;
-            tileLayer = createTileLayer(currentTileIndex);
-            tileLayer.addTo(map);
-            errorCount = 0;
           }
-        });
+          
+          currentProviderIndex = (currentProviderIndex + 1) % tileProviders.length;
+          tileLayer = createTileLayer(currentProviderIndex);
+          
+          console.log(`🗺️ 尝试瓦片提供商: ${tileProviders[currentProviderIndex].name}`);
+          
+          tileLayer.on('tileerror', (e) => {
+            console.warn(`❌ 瓦片加载失败 (${tileProviders[currentProviderIndex].name}):`, e);
+            
+            // 如果当前提供商失败次数过多，尝试下一个
+            setTimeout(() => {
+              if (currentProviderIndex < tileProviders.length - 1) {
+                tryNextProvider();
+              } else {
+                console.error('❌ 所有瓦片提供商都失败了，使用离线模式');
+              }
+            }, 1000);
+          });
 
-        tileLayer.on('tileload', () => {
-          // 瓦片加载成功时重置错误计数
-          if (errorCount > 0) {
-            errorCount = Math.max(0, errorCount - 1);
-          }
-        });
+          tileLayer.on('tileload', () => {
+            console.log(`✅ 瓦片加载成功 (${tileProviders[currentProviderIndex].name})`);
+          });
+          
+          tileLayer.addTo(map);
+        };
 
-        tileLayer.addTo(map);
+        // 初始化第一个瓦片提供商
+        tryNextProvider();
 
         // 创建自定义图标
         const createIcon = (color: string) => L.divIcon({
@@ -183,12 +238,7 @@ const Journey: React.FC = () => {
         const group = new L.FeatureGroup([startMarker, endMarker]);
         map.fitBounds(group.getBounds().pad(0.1));
 
-        // 延迟刷新地图尺寸，确保容器完全渲染
-        setTimeout(() => {
-          if (map && mapRef.current) {
-            map.invalidateSize();
-          }
-        }, 100);
+        console.log('✅ 地图初始化完成');
 
       } catch (error) {
         console.error('地图初始化失败:', error);
@@ -196,10 +246,15 @@ const Journey: React.FC = () => {
     }
 
     return () => {
-      // 清理资源 - 改进生命周期管理
+      // 清理资源
+      if (stepIntervalRef.current) {
+        clearInterval(stepIntervalRef.current);
+        stepIntervalRef.current = null;
+      }
+      
       if (planeMarkerRef.current) {
         try {
-          if (mapInstanceRef.current && mapInstanceRef.current.hasLayer(planeMarkerRef.current)) {
+          if (mapInstanceRef.current && planeMarkerRef.current.getElement()) {
             mapInstanceRef.current.removeLayer(planeMarkerRef.current);
           }
           planeMarkerRef.current = null;
@@ -210,16 +265,6 @@ const Journey: React.FC = () => {
       
       if (mapInstanceRef.current) {
         try {
-          // 清理所有图层
-          mapInstanceRef.current.eachLayer((layer) => {
-            try {
-              mapInstanceRef.current?.removeLayer(layer);
-            } catch (e) {
-              console.warn('清理图层时出错:', e);
-            }
-          });
-          
-          // 移除地图实例
           mapInstanceRef.current.remove();
           mapInstanceRef.current = null;
         } catch (error) {
@@ -229,144 +274,218 @@ const Journey: React.FC = () => {
     };
   }, [beijingCoords, destinationCoords, flightPath]);
 
-  // 飞行动画效果 - 优化依赖项，避免地图重复初始化
+  // 动画控制useEffect - 步进式动画
   useEffect(() => {
-    console.log('=== 飞行动画效果 useEffect 触发 ===');
-    console.log('isFlying:', isFlying);
-    console.log('mapInstanceRef.current:', !!mapInstanceRef.current);
-    console.log('flightPath.length:', flightPath.length);
+    console.log('🎬 动画控制useEffect触发');
+    console.log('- isFlying:', isFlying);
+    console.log('- mapInstanceRef存在:', !!mapInstanceRef.current);
+    console.log('- flightPath长度:', flightPath.length);
     
-    if (isFlying && mapInstanceRef.current && flightPath.length > 0) {
-      console.log('=== 条件满足，开始创建飞机标记 ===');
+    if (isFlying && mapInstanceRef.current && flightPath.length > 0 && beijingCoords && destinationCoords) {
+      console.log('🚀 开始步进式飞机动画');
       
       // 创建飞机标记（只创建一次）
       if (!planeMarkerRef.current) {
-        console.log('=== 创建新的飞机标记 ===');
-        console.log('起始位置:', flightPath[0]);
+        console.log('✈️ 创建飞机标记');
         
-        // 计算飞机的初始方向角度
-        const bearing = calculateBearing(
-          beijingCoords.lat, beijingCoords.lng,
-          destinationCoords.lat, destinationCoords.lng
-        );
-        
-        // 使用带方向的飞机图标
+        // 创建简单明显的飞机图标
         const planeIcon = L.divIcon({
-          html: `<div class="simple-plane" style="transform: rotate(${bearing}deg);">✈️</div>`,
-          className: 'plane-marker-container',
-          iconSize: [40, 40],
-          iconAnchor: [20, 20]
+          html: `<div class="plane-icon-wrapper" style="
+            width: 30px;
+            height: 30px;
+            background: #ff0000;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(255,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            animation: planePulse 2s infinite;
+          "><span class="plane-emoji">✈️</span></div>`,
+          className: 'plane-marker',
+          iconSize: [30, 30],
+          iconAnchor: [15, 15]
         });
 
         try {
-          // 确保地图实例存在且有效
-          if (mapInstanceRef.current && mapInstanceRef.current.getContainer()) {
-            planeMarkerRef.current = L.marker([flightPath[0].lat, flightPath[0].lng], {
-              icon: planeIcon,
-              zIndexOffset: 1000
-            }).addTo(mapInstanceRef.current);
-            
-            console.log('✅ 飞机标记创建成功！');
-            console.log('飞机标记对象:', planeMarkerRef.current);
-            
-            // 不需要强制刷新地图，避免闪烁
-            // mapInstanceRef.current.invalidateSize();
-          } else {
-            console.error('❌ 地图实例无效，无法创建飞机标记');
-          }
+          planeMarkerRef.current = L.marker([flightPath[0].lat, flightPath[0].lng], {
+            icon: planeIcon,
+            zIndexOffset: 1000
+          }).addTo(mapInstanceRef.current);
           
+          // 设置初始朝向（指向下一路径点）
+          try {
+            const nextInit = flightPath[Math.min(1, flightPath.length - 1)];
+            const initBearing = calculateBearing(
+              flightPath[0].lat, flightPath[0].lng,
+              nextInit.lat, nextInit.lng
+            );
+            const el = planeMarkerRef.current.getElement();
+            const emoji = el ? (el.querySelector('.plane-emoji') as HTMLElement | null) : null;
+            if (emoji) {
+              emoji.style.transform = `rotate(${initBearing}deg)`;
+            }
+          } catch (e) {
+            console.warn('设置初始朝向失败', e);
+          }
+
+          console.log('✅ 飞机标记创建成功，起始位置:', flightPath[0]);
         } catch (error) {
           console.error('❌ 创建飞机标记失败:', error);
+          return;
         }
-      } else {
-        console.log('=== 飞机标记已存在，重置位置 ===');
-        planeMarkerRef.current.setLatLng([flightPath[0].lat, flightPath[0].lng]);
       }
 
-      const interval = setInterval(() => {
-        setFlightProgress(prev => {
-          if (prev >= 100) {
+      // 清理之前的定时器
+      if (stepIntervalRef.current) {
+        clearInterval(stepIntervalRef.current);
+        stepIntervalRef.current = null;
+      }
+
+      // 步进式动画逻辑（从当前步骤继续，避免重置到0）
+      let step = currentStep;
+      stepIntervalRef.current = setInterval(() => {
+        try {
+          if (step >= flightPath.length - 1) {
             console.log('🎯 飞行完成！');
             setHasArrived(true);
             setIsFlying(false);
-            return 100;
-          }
-
-          // 更新飞机位置（平滑移动）- 添加安全检查
-          const pathIndex = Math.floor((prev / 100) * (flightPath.length - 1));
-          const currentPosition = flightPath[pathIndex];
-          
-          if (currentPosition && planeMarkerRef.current) {
-            try {
-              // 检查标记是否仍然有效
-              if (planeMarkerRef.current._map && planeMarkerRef.current.getLatLng) {
-                console.log(`🛩️ 更新飞机位置 ${Math.round(prev)}%:`, currentPosition);
-                
-                // 计算当前段的方向角度（如果不是最后一个点）
-                let bearing = calculateBearing(
-                  beijingCoords.lat, beijingCoords.lng,
-                  destinationCoords.lat, destinationCoords.lng
-                );
-                
-                if (pathIndex < flightPath.length - 1) {
-                  const nextPosition = flightPath[pathIndex + 1];
-                  if (nextPosition) {
-                    bearing = calculateBearing(
-                      currentPosition.lat, currentPosition.lng,
-                      nextPosition.lat, nextPosition.lng
-                    );
-                  }
-                }
-                
-                // 更新飞机位置和方向
-                planeMarkerRef.current.setLatLng([currentPosition.lat, currentPosition.lng]);
-                
-                // 更新飞机图标的方向
-                const iconElement = planeMarkerRef.current.getElement();
-                if (iconElement) {
-                  const planeDiv = iconElement.querySelector('.simple-plane');
-                  if (planeDiv) {
-                    (planeDiv as HTMLElement).style.transform = `rotate(${bearing}deg)`;
-                  }
-                }
-              } else {
-                console.warn('飞机标记已失效，停止更新位置');
-                setIsFlying(false);
-              }
-            } catch (error) {
-              console.error('更新飞机位置时出错:', error);
-              setIsFlying(false);
+            setFlightProgress(100);
+            if (stepIntervalRef.current) {
+              clearInterval(stepIntervalRef.current);
+              stepIntervalRef.current = null;
             }
+            return;
           }
 
-          return prev + 2; // 加快速度便于测试
-        });
-      }, 100); // 更快的更新频率
+          const currentPosition = flightPath[step];
+          const progress = Math.round((step / (flightPath.length - 1)) * 100);
+          
+          console.log(`🛩️ 步骤 ${step}/${flightPath.length - 1}, 进度: ${progress}%, 位置:`, currentPosition);
+          
+          if (currentPosition && planeMarkerRef.current && mapInstanceRef.current) {
+            // 检查地图和标记是否仍然有效
+            if (!mapInstanceRef.current.getContainer()) {
+              console.warn('地图容器已被移除，停止动画');
+              setIsFlying(false);
+              if (stepIntervalRef.current) {
+                clearInterval(stepIntervalRef.current);
+                stepIntervalRef.current = null;
+              }
+              return;
+            }
+
+            // 更新飞机位置
+            planeMarkerRef.current.setLatLng([currentPosition.lat, currentPosition.lng]);
+            
+            // 根据下一点计算朝向并旋转标记中的飞机图标
+            try {
+              const nextPoint = flightPath[Math.min(step + 1, flightPath.length - 1)];
+              const bearing = calculateBearing(
+                currentPosition.lat, currentPosition.lng,
+                nextPoint.lat, nextPoint.lng
+              );
+              const el = planeMarkerRef.current.getElement();
+              const emoji = el ? (el.querySelector('.plane-emoji') as HTMLElement | null) : null;
+              if (emoji) {
+                emoji.style.transform = `rotate(${bearing}deg)`;
+              }
+            } catch (e) {
+              console.warn('更新飞机朝向失败', e);
+            }
+            
+            // 更新进度状态
+            setCurrentStep(step);
+            setFlightProgress(progress);
+            
+            // 每5步让地图跟随飞机移动，添加错误处理
+            if (step % 5 === 0) {
+              try {
+                mapInstanceRef.current.panTo([currentPosition.lat, currentPosition.lng], {
+                  animate: true,
+                  duration: 0.25
+                });
+              } catch (panError) {
+                console.warn('地图平移时出错:', panError);
+              }
+            }
+            
+            console.log(`✅ 飞机位置已更新到步骤 ${step}`);
+          } else {
+            console.warn('缺少必要的引用，停止动画');
+            setIsFlying(false);
+            if (stepIntervalRef.current) {
+              clearInterval(stepIntervalRef.current);
+              stepIntervalRef.current = null;
+            }
+            return;
+          }
+
+          step++;
+        } catch (error) {
+          console.error('❌ 动画步骤执行时出错:', error);
+          setIsFlying(false);
+          if (stepIntervalRef.current) {
+            clearInterval(stepIntervalRef.current);
+            stepIntervalRef.current = null;
+          }
+        }
+      }, 200); // 减少到200ms，让动画更流畅
 
       return () => {
-        console.log('🧹 清理飞行动画定时器');
-        clearInterval(interval);
+        if (stepIntervalRef.current) {
+          clearInterval(stepIntervalRef.current);
+          stepIntervalRef.current = null;
+        }
       };
     } else {
-      console.log('❌ 条件不满足，无法创建飞机标记');
+      console.log('❌ 动画条件不满足');
       if (!isFlying) console.log('- isFlying 为 false');
       if (!mapInstanceRef.current) console.log('- 地图实例不存在');
       if (flightPath.length === 0) console.log('- 飞行路径为空');
+      if (!beijingCoords) console.log('- 北京坐标不存在');
+      if (!destinationCoords) console.log('- 目标城市坐标不存在');
     }
-  }, [isFlying]); // 移除flightPath依赖，避免重复触发
+  }, [isFlying, beijingCoords, destinationCoords, flightPath]);
 
   const startJourney = () => {
-    console.log('开始飞行，目标城市:', journeyData.city);
+    console.log('🚀 开始旅程按钮被点击');
+    console.log('目标城市:', journeyData.city, '→', normalizedCity);
+    console.log('地图实例存在:', !!mapInstanceRef.current);
+    console.log('飞行路径长度:', flightPath.length);
+    
+    // 确保所有必要条件都满足
+    if (!mapInstanceRef.current) {
+      console.error('❌ 地图实例不存在，无法开始飞行');
+      return;
+    }
+    
+    if (flightPath.length === 0) {
+      console.error('❌ 飞行路径为空，无法开始飞行');
+      return;
+    }
+    
     setIsFlying(true);
     setFlightProgress(0);
+    setCurrentStep(0);
     setHasArrived(false);
+    
+    console.log('✅ 飞行状态已设置为true');
   };
 
   const resetJourney = () => {
-    console.log('重置旅程');
+    console.log('🔄 重置旅程');
     setFlightProgress(0);
+    setCurrentStep(0);
     setIsFlying(false);
     setHasArrived(false);
+    
+    // 清理定时器
+    if (stepIntervalRef.current) {
+      clearInterval(stepIntervalRef.current);
+      stepIntervalRef.current = null;
+    }
     
     // 重置飞机位置到起点
     if (planeMarkerRef.current && flightPath.length > 0) {
@@ -413,7 +532,9 @@ const Journey: React.FC = () => {
                 className={`airplane ${isFlying ? 'flying' : ''}`}
                 style={{ left: `${flightProgress}%` }}
               >
-                <Plane size={24} />
+                <div className="airplane-icon">
+                  <Plane size={24} />
+                </div>
               </div>
             </div>
           </div>
@@ -422,7 +543,7 @@ const Journey: React.FC = () => {
             <MapPin className="city-icon destination-icon" />
             <div>
               <h3>{journeyData.city}</h3>
-              <p>目的地机场</p>
+              <p>旅游目的地</p>
             </div>
           </div>
         </div>
@@ -430,19 +551,34 @@ const Journey: React.FC = () => {
         <div className="flight-details">
           <div className="detail-item">
             <Clock size={16} />
-            <span>飞行时间: {formatFlightTime(flightTime)}</span>
+            <span>预估飞行时间: {formatFlightTime(flightTime)}</span>
           </div>
           <div className="detail-item">
             <Navigation size={16} />
-            <span>飞行距离: {formatDistance(distance)}</span>
+            <span>大致距离: {formatDistance(distance)}</span>
           </div>
           <div className="detail-item">
             <span className="progress-text">
               飞行进度: {Math.round(flightProgress)}%
             </span>
           </div>
+          <div className="detail-item">
+            <span className="step-text">
+              步骤: {currentStep}/{flightPath.length - 1}
+            </span>
+          </div>
         </div>
       </div>
+
+      {/* 实时位置显示面板 */}
+      {isFlying && currentStep < flightPath.length && (
+        <div className="real-time-position">
+          <h4>🛩️ 实时飞行位置</h4>
+          <p>纬度: {flightPath[currentStep]?.lat.toFixed(4)}</p>
+          <p>经度: {flightPath[currentStep]?.lng.toFixed(4)}</p>
+          <p>当前步骤: {currentStep + 1}/{flightPath.length}</p>
+        </div>
+      )}
 
       {/* 真实地图区域 */}
       <div className="map-container">
@@ -488,6 +624,7 @@ const Journey: React.FC = () => {
           <div className="flying-status">
             <div className="flying-animation">✈️</div>
             <p>正在飞往 {journeyData.city}...</p>
+            <p>步骤: {currentStep + 1}/{flightPath.length}</p>
           </div>
         )}
 
