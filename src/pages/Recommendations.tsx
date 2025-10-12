@@ -121,31 +121,31 @@ const Recommendations: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-red-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-600 to-amber-600 text-white py-12">
+      <div className="bg-gradient-to-r from-red-600 to-amber-600 text-white py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">{t('recommendations.title')}</h1>
-          <p className="text-xl opacity-90 mb-4">{t('recommendations.subtitle')}</p>
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-            <p className="text-lg">
+          <h1 className="text-3xl font-bold mb-3">{t('recommendations.title')}</h1>
+          <p className="text-lg opacity-90 mb-3">{t('recommendations.subtitle')}</p>
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+            <p className="text-base">
               🤖 <strong>缅缅AI智能推荐：</strong>基于您的兴趣偏好和浏览历史，为您精心挑选最适合的缅甸文化体验！
             </p>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6">
         {/* Category Filter */}
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="flex items-center gap-4 mb-4">
             <Filter className="w-5 h-5 text-gray-600" />
-            <h2 className="text-lg font-semibold text-gray-800">{t('recommendations.filterByCategory')}</h2>
+            <h2 className="text-base font-semibold text-gray-800">{t('recommendations.filterByCategory')}</h2>
           </div>
           <div className="flex flex-wrap gap-2">
             {categories.map(category => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full transition-colors ${
+                className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
                   selectedCategory === category.id
                     ? 'bg-red-600 text-white'
                     : 'bg-white text-gray-700 hover:bg-red-50 border border-gray-200'
@@ -168,11 +168,11 @@ const Recommendations: React.FC = () => {
         )}
 
         {/* Recommendations Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {recommendations.map(recommendation => (
             <div key={recommendation.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               {/* Image */}
-              <div className="relative h-48">
+              <div className="relative h-40">
                 <img 
                   src={recommendation.image} 
                   alt={i18n.language === 'zh' ? recommendation.name : recommendation.nameEn}
@@ -209,53 +209,53 @@ const Recommendations: React.FC = () => {
               </div>
 
               {/* Content */}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              <div className="p-3">
+                <h3 className="text-base font-semibold text-gray-800 mb-2">
                   {i18n.language === 'zh' ? recommendation.name : recommendation.nameEn}
                 </h3>
                 
-                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                <p className="text-gray-600 text-xs mb-2 line-clamp-2">
                   {i18n.language === 'zh' ? recommendation.description : recommendation.descriptionEn}
                 </p>
 
                 {/* Details */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="space-y-1.5 mb-3">
+                  <div className="flex items-center gap-2 text-xs text-gray-600">
                     <Clock className="w-4 h-4" />
                     <span>{i18n.language === 'zh' ? recommendation.duration : recommendation.durationEn}</span>
                   </div>
                   
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2 text-xs">
                     <Star className="w-4 h-4 text-yellow-500" />
                     <span className="text-gray-600">{recommendation.rating}</span>
                     <span className="text-gray-400">•</span>
-                    <span className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(recommendation.difficulty)}`}>
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] ${getDifficultyColor(recommendation.difficulty)}`}>
                       {recommendation.difficulty}
                     </span>
                     <span className="text-gray-400">•</span>
-                    <span className="text-gray-600 font-medium">{getPriceDisplay(recommendation.price)}</span>
+                    <span className="text-gray-600 font-medium text-xs">{getPriceDisplay(recommendation.price)}</span>
                   </div>
                 </div>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-1 mb-3">
+                <div className="flex flex-wrap gap-1 mb-2">
                   {(i18n.language === 'zh' ? recommendation.tags : recommendation.tagsEn)
                     .slice(0, 3)
                     .map((tag: string, index: number) => (
-                    <span key={index} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">
+                    <span key={index} className="px-2 py-0.5 bg-gray-100 text-gray-600 text-[11px] rounded">
                       {tag}
                     </span>
                   ))}
                 </div>
 
                 {/* Highlights */}
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">亮点特色：</h4>
+                <div className="mb-3">
+                  <h4 className="text-sm font-medium text-gray-700 mb-1.5">亮点特色：</h4>
                   <div className="flex flex-wrap gap-1">
                     {(i18n.language === 'zh' ? recommendation.highlights : recommendation.highlightsEn)
                       .slice(0, 2)
                       .map((highlight: string, index: number) => (
-                      <span key={index} className="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded">
+                      <span key={index} className="px-2 py-0.5 bg-amber-100 text-amber-700 text-[11px] rounded">
                         {highlight}
                       </span>
                     ))}
@@ -264,8 +264,8 @@ const Recommendations: React.FC = () => {
 
                 {/* Recommendation Reasons (for personalized) */}
                 {recommendation.reasons && recommendation.reasons.length > 0 && (
-                  <div className="mb-4 p-2 bg-green-50 rounded">
-                    <p className="text-xs text-green-700">
+                  <div className="mb-3 p-2 bg-green-50 rounded">
+                    <p className="text-[11px] text-green-700">
                       <span className="font-medium">推荐理由：</span>
                       {recommendation.reasons.slice(0, 2).join('，')}
                     </p>
@@ -273,7 +273,7 @@ const Recommendations: React.FC = () => {
                 )}
 
                 {/* Action Button */}
-                <button className="w-full bg-gradient-to-r from-red-600 to-amber-600 text-white py-2 px-4 rounded-lg hover:from-red-700 hover:to-amber-700 transition-colors">
+                <button className="w-full bg-gradient-to-r from-red-600 to-amber-600 text-white py-2 px-3 rounded-lg hover:from-red-700 hover:to-amber-700 transition-colors text-sm">
                   {t('recommendations.viewDetails')}
                 </button>
               </div>
@@ -283,12 +283,12 @@ const Recommendations: React.FC = () => {
 
         {/* Empty State */}
         {recommendations.length === 0 && (
-          <div className="text-center py-12">
+          <div className="text-center py-8">
             <div className="text-gray-400 mb-4">
               <MapPin className="w-16 h-16 mx-auto" />
             </div>
-            <h3 className="text-lg font-medium text-gray-600 mb-2">暂无推荐内容</h3>
-            <p className="text-gray-500">请尝试选择其他分类或调整筛选条件</p>
+            <h3 className="text-base font-medium text-gray-600 mb-2">暂无推荐内容</h3>
+            <p className="text-gray-500 text-sm">请尝试选择其他分类或调整筛选条件</p>
           </div>
         )}
       </div>

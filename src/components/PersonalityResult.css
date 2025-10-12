@@ -1,5 +1,5 @@
 .personality-result {
-  padding: 2rem 1rem;
+  padding: 1rem 0.75rem;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -15,23 +15,23 @@
 .result-header {
   background: linear-gradient(135deg, #dc2626, #f59e0b);
   color: white;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
 .result-header h2 {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .result-header p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   opacity: 0.9;
 }
 
 .main-recommendation {
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .recommendation-card {
@@ -56,14 +56,14 @@
 .card-header {
   background: linear-gradient(135deg, #dc2626, #f59e0b);
   color: white;
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .card-header h3 {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin: 0;
 }
@@ -81,15 +81,15 @@
 .city-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  padding: 2rem;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .city-image {
   position: relative;
   border-radius: 15px;
   overflow: hidden;
-  height: 300px;
+  height: 220px;
 }
 
 .city-image img {
@@ -105,17 +105,17 @@
   right: 0;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   color: white;
-  padding: 2rem 1.5rem 1.5rem;
+  padding: 1rem 1rem 0.75rem;
 }
 
 .city-overlay h4 {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: bold;
   margin: 0 0 0.5rem 0;
 }
 
 .city-overlay p {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   opacity: 0.9;
   margin: 0;
 }
@@ -127,17 +127,17 @@
 }
 
 .description-text {
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: #374151;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .activities h5 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #dc2626;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .activity-tags {
@@ -149,9 +149,9 @@
 .activity-tag {
   background: linear-gradient(135deg, #fef3c7, #fed7aa);
   color: #92400e;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   border: 1px solid #f59e0b;
 }
@@ -159,8 +159,8 @@
 .secondary-recommendations {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  padding: 0 2rem 2rem;
+  gap: 1rem;
+  padding: 0 1rem 1rem;
 }
 
 .zodiac-content,
@@ -208,8 +208,8 @@
 .trait-highlight {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  padding: 1rem;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
   background: #fef3c7;
   border-radius: 10px;
   border-left: 4px solid #f59e0b;
@@ -227,13 +227,13 @@
 }
 
 .recommendation-text {
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: #374151;
 }
 
 .personal-summary {
-  padding: 2rem;
+  padding: 1rem;
   background: #f9fafb;
   border-top: 2px solid #e5e7eb;
 }

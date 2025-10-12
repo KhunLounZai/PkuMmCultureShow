@@ -1,7 +1,7 @@
 .journey-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: 12px;
   font-family: 'Arial', sans-serif;
 }
 
@@ -9,11 +9,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 15px;
-  padding: 20px;
+  padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -38,7 +38,7 @@
 
 .journey-title {
   color: white;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
   margin: 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -47,8 +47,8 @@
 .flight-info-card {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
-  padding: 30px;
-  margin-bottom: 30px;
+  padding: 16px;
+  margin-bottom: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
 }
@@ -57,7 +57,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 25px;
+  margin-bottom: 12px;
   position: relative;
 }
 
@@ -91,7 +91,7 @@
 
 .flight-path {
   flex: 2;
-  margin: 0 30px;
+  margin: 0 16px;
   position: relative;
 }
 
@@ -131,8 +131,8 @@
 .flight-details {
   display: flex;
   justify-content: space-around;
-  gap: 20px;
-  padding-top: 20px;
+  gap: 12px;
+  padding-top: 12px;
   border-top: 1px solid #e5e7eb;
   flex-wrap: wrap;
 }
@@ -153,15 +153,15 @@
 /* 实时位置显示面板 */
 .real-time-position {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 12px;
+  right: 12px;
   background: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 15px;
+  padding: 10px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 12px;
   z-index: 1000;
-  min-width: 200px;
+  min-width: 160px;
 }
 
 .real-time-position h4 {
@@ -176,10 +176,10 @@
 .map-container {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 30px;
+  padding: 12px;
+  margin-bottom: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  height: 500px;
+  height: 340px;
   position: relative;
   overflow: hidden;
 }
@@ -194,8 +194,8 @@
 .destination-info {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
-  padding: 30px;
-  margin-bottom: 30px;
+  padding: 16px;
+  margin-bottom: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 

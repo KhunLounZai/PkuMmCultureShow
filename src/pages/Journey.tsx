@@ -564,7 +564,7 @@ const Journey: React.FC = () => {
           </div>
           <div className="detail-item">
             <span className="step-text">
-              步骤: {currentStep}/{flightPath.length - 1}
+              步骤: {Math.min(currentStep + 1, flightPath.length)}/{flightPath.length}
             </span>
           </div>
         </div>
@@ -624,7 +624,7 @@ const Journey: React.FC = () => {
           <div className="flying-status">
             <div className="flying-animation">✈️</div>
             <p>正在飞往 {journeyData.city}...</p>
-            <p>步骤: {currentStep + 1}/{flightPath.length}</p>
+            <p>步骤: {Math.min(currentStep + 1, flightPath.length)}/{flightPath.length}</p>
           </div>
         )}
 
@@ -632,9 +632,7 @@ const Journey: React.FC = () => {
           <div className="arrival-status">
             <div className="arrival-animation">🎉</div>
             <p>已抵达 {journeyData.city}！</p>
-            <button onClick={resetJourney} className="reset-journey-btn">
-              重新飞行
-            </button>
+            <button onClick={() => navigate('/a')} className="reset-journey-btn">开始旅游</button>
           </div>
         )}
       </div>

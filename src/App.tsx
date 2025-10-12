@@ -5,6 +5,7 @@ import Recommendations from './pages/Recommendations';
 import Map from './pages/Map';
 import Videos from './pages/Videos';
 import Journey from './pages/Journey';
+import A from './pages/A';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/map" element={<Map />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/journey" element={<Journey />} />
+        <Route path="/a" element={<A />} />
       </Routes>
     </Layout>
   );

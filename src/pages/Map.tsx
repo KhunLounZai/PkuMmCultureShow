@@ -100,18 +100,18 @@ const Map: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             {t('map.title')}
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-4">
             {t('map.subtitle')}
           </p>
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 max-w-3xl mx-auto">
-            <p className="text-lg text-blue-800">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 max-w-3xl mx-auto">
+            <p className="text-base text-blue-800">
               🗺️ <strong>缅缅AI智能导航：</strong>根据您的位置和兴趣，智能推荐最佳游览路线和必访景点！
             </p>
           </div>
@@ -222,13 +222,13 @@ const Map: React.FC = () => {
                     </span>
                   </div>
                   
-                  <button className="w-full px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-200 font-medium">
+                  <button className="w-full px-3 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-200 font-medium text-sm">
                     {t('common.learnMore')}
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 text-center">
+              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 text-center">
                 <Info className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {i18n.language === 'zh' ? '选择一个地点' : 'Select a Location'}
