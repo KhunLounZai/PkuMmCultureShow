@@ -127,15 +127,18 @@ const Journey: React.FC = () => {
           renderer: L.svg({ padding: 0.5 }) // 使用SVG渲染器替代canvas
         }).setView([midpoint.lat, midpoint.lng], 4);
 
-        // 添加地图瓦片 - 使用多个备用瓦片源
+        // 优化的地图瓦片系统 - 减少网络请求和错误
         const tileProviders = [
           {
             name: 'CartoDB Positron',
             url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
             options: {
               attribution: '© OpenStreetMap contributors © CARTO',
-              subdomains: 'abcd',
-              maxZoom: 19
+              subdomains: ['a', 'b', 'c', 'd'],
+              maxZoom: 15, // 降低最大缩放级别减少瓦片请求
+              minZoom: 2,
+              tileSize: 256,
+              crossOrigin: true
             }
           },
           {
@@ -143,7 +146,11 @@ const Journey: React.FC = () => {
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             options: {
               attribution: '© OpenStreetMap contributors',
-              maxZoom: 19
+              subdomains: ['a', 'b', 'c'],
+              maxZoom: 15,
+              minZoom: 2,
+              tileSize: 256,
+              crossOrigin: true
             }
           },
           {
@@ -151,51 +158,101 @@ const Journey: React.FC = () => {
             url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
             options: {
               attribution: '© OpenStreetMap contributors © CARTO',
-              subdomains: 'abcd',
-              maxZoom: 19
+              subdomains: ['a', 'b', 'c', 'd'],
+              maxZoom: 15,
+              minZoom: 2,
+              tileSize: 256,
+              crossOrigin: true
             }
           }
         ];
         
         let currentProviderIndex = 0;
         let tileLayer: L.TileLayer | null = null;
+        let failureCount = 0;
+        let isOfflineMode = false;
+
+        // 创建静态地图作为离线备选
+        const createOfflineMap = () => {
+          console.log('🔄 启用离线地图模式');
+          isOfflineMode = true;
+          
+          // 创建简单的静态地图背景
+          const offlineLayer = L.tileLayer('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDMyIDAgTCAwIDAgMCAzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZGRkIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiBmaWxsPSIjZjhmOWZhIi8+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9InVybCgjZ3JpZCkiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMnB4IiBmaWxsPSIjOTk5Ij7npo/nu5/lnLDlm748L3RleHQ+PC9zdmc+', {
+            attribution: '离线地图模式',
+            maxZoom: 15,
+            minZoom: 2
+          });
+          
+          return offlineLayer;
+        };
 
         const createTileLayer = (providerIndex: number) => {
+          if (isOfflineMode) {
+            return createOfflineMap();
+          }
+          
           const provider = tileProviders[providerIndex];
           return L.tileLayer(provider.url, {
             ...provider.options,
-            minZoom: 2,
-            errorTileUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0iI2Y0ZjRmNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM5OTkiPk1hcCBUaWxlPC90ZXh0Pjwvc3ZnPg==',
-            retryDelay: 2000,
-            retryLimit: 2
+            // 优化的错误处理配置
+            errorTileUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0iI2Y0ZjRmNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwcHgiIGZpbGw9IiM5OTkiPuWKoOi9veWksei0pTwvdGV4dD48L3N2Zz4=',
+            timeout: 5000, // 5秒超时
+            retryDelay: 1000,
+            retryLimit: 1, // 减少重试次数
+            keepBuffer: 2, // 减少缓冲区
+            updateWhenZooming: false, // 缩放时不更新瓦片
+            updateWhenIdle: true // 只在空闲时更新
           });
         };
 
         const tryNextProvider = () => {
           if (tileLayer) {
-            map.removeLayer(tileLayer);
+            try {
+              map.removeLayer(tileLayer);
+            } catch (e) {
+              console.warn('移除瓦片层时出错:', e);
+            }
+          }
+          
+          // 如果所有提供商都失败了，启用离线模式
+          if (failureCount >= tileProviders.length * 2) {
+            tileLayer = createOfflineMap();
+            tileLayer.addTo(map);
+            return;
           }
           
           currentProviderIndex = (currentProviderIndex + 1) % tileProviders.length;
           tileLayer = createTileLayer(currentProviderIndex);
           
-          console.log(`🗺️ 尝试瓦片提供商: ${tileProviders[currentProviderIndex].name}`);
+          if (!isOfflineMode) {
+            console.log(`🗺️ 尝试瓦片提供商: ${tileProviders[currentProviderIndex].name} (失败次数: ${failureCount})`);
+          }
+          
+          let errorCount = 0;
+          const maxErrors = 5; // 最大错误次数
           
           tileLayer.on('tileerror', (e) => {
-            console.warn(`❌ 瓦片加载失败 (${tileProviders[currentProviderIndex].name}):`, e);
+            errorCount++;
             
-            // 如果当前提供商失败次数过多，尝试下一个
-            setTimeout(() => {
-              if (currentProviderIndex < tileProviders.length - 1) {
+            // 减少错误日志输出
+            if (errorCount <= 3) {
+              console.warn(`❌ 瓦片加载失败 (${tileProviders[currentProviderIndex]?.name || '离线模式'}): ${errorCount}/${maxErrors}`);
+            }
+            
+            // 如果错误次数过多，尝试下一个提供商
+            if (errorCount >= maxErrors) {
+              failureCount++;
+              setTimeout(() => {
                 tryNextProvider();
-              } else {
-                console.error('❌ 所有瓦片提供商都失败了，使用离线模式');
-              }
-            }, 1000);
+              }, 2000);
+            }
           });
 
           tileLayer.on('tileload', () => {
-            console.log(`✅ 瓦片加载成功 (${tileProviders[currentProviderIndex].name})`);
+            if (errorCount === 0) {
+              console.log(`✅ 瓦片加载成功 (${tileProviders[currentProviderIndex]?.name || '离线模式'})`);
+            }
           });
           
           tileLayer.addTo(map);

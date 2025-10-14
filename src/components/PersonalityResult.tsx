@@ -23,6 +23,19 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
   const handleExplore = () => {
     const result = getRecommendationResult();
     if (result) {
+      // 将推荐城市写入本地存储，供其他页面（如 /a）读取
+      const cityToSlug: Record<string, string> = {
+        '仰光': 'yangon',
+        '蒲甘': 'bagan',
+        '曼德勒': 'mandalay',
+        '茵莱湖': 'inle-lake',
+        '额布里海滩': 'ngapali'
+      };
+      try {
+        const slug = cityToSlug[result.city] || cityToSlug[result.cityEn] || 'yangon';
+        localStorage.setItem('recommendedCitySlug', slug);
+      } catch {}
+
       // 传递推荐城市信息到Journey页面
       navigate('/journey', {
         state: {

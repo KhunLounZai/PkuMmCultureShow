@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const A: React.FC = () => {
   const cardBase = 'w-64 h-40 shrink-0 rounded-2xl shadow-lg border border-white/20 overflow-hidden bg-white/90 backdrop-blur';
@@ -27,6 +27,35 @@ const A: React.FC = () => {
     { title: '茵莱湖水上生活', duration: '3:48', image: 'https://placehold.co/600x400?text=Inle+Lake+Life' },
   ];
 
+  // 缅甸 5 城市明信片（正面/背面）存放路径
+  // 请将图片放在 public/images/postcards/<city_slug>/front.jpg 与 back.jpg
+  const postcardSets = [
+    { city: '仰光', cityEn: 'Yangon', slug: 'yangon', front: '/images/postcards/yangon-front.png', back: '/images/postcards/yangon-back.png' },
+    { city: '蒲甘', cityEn: 'Bagan', slug: 'bagan', front: '/images/postcards/bagan-front.png', back: '/images/postcards/bagan-back.png' },
+    { city: '曼德勒', cityEn: 'Mandalay', slug: 'mandalay', front: '/images/postcards/mandalay-front.png', back: '/images/postcards/mandalay-back.png' },
+    { city: '茵莱湖', cityEn: 'Inle Lake', slug: 'inle-lake', front: '/images/postcards/inle-lake-front.png', back: '/images/postcards/inle-lake-back.png' },
+    { city: '额布里海滩', cityEn: 'Ngapali Beach', slug: 'ngapali', front: '/images/postcards/ngapali-front.png', back: '/images/postcards/ngapali-back.png' },
+  ];
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // 读取推荐城市：优先 URL 参数 ?city=，其次 localStorage.recommendedCitySlug
+  const getSelectedCitySlug = (): string => {
+    try {
+      const search = typeof window !== 'undefined' ? window.location.search : '';
+      const qp = new URLSearchParams(search);
+      const urlCity = qp.get('city');
+      if (urlCity) return urlCity;
+      const storedCity = typeof window !== 'undefined' ? localStorage.getItem('recommendedCitySlug') : null;
+      return storedCity || 'yangon';
+    } catch {
+      return 'yangon';
+    }
+  };
+  const selectedCitySlug = getSelectedCitySlug();
+  const activePostcard = postcardSets.find(p => p.slug === selectedCitySlug) || postcardSets[0];
+  const filteredAttractions = attractions.filter(a => (a as any).slug === selectedCitySlug);
+  const filteredVideos = videos.filter(v => (v as any).slug === selectedCitySlug);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
       {/* 顶部标题 */}
@@ -42,35 +71,52 @@ const A: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6 space-y-8">
-        {/* 明信片展示区 */}
+        {/* 城市明信片正反面展示（仅推荐城市） */}
         <section>
           <div className="flex items-end justify-between mb-4">
             <div>
-              <h2 className={sectionTitle}>明信片展示区</h2>
-              <p className={sectionDesc}>以卡片形式呈现各地风情，左右滑动浏览</p>
+              <h2 className={sectionTitle}>城市明信片（正反面）</h2>
+              <p className={sectionDesc}>仅展示系统推荐的城市明信片正面与背面</p>
             </div>
           </div>
-          <div className={carouselBase} style={{ scrollSnapType: 'x mandatory' }}>
-            {postcards.map((card, idx) => (
-              <div
-                key={`postcard-${idx}`}
-                className={`${cardBase} bg-gradient-to-br from-white via-orange-50 to-amber-100`}
-                style={{ scrollSnapAlign: 'start' }}
-              >
-                <div className="h-full w-full p-4 flex flex-col justify-between">
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl">{card.emoji}</span>
-                    <span className="text-xs text-gray-400">POSTCARD</span>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-900">{card.title}</h3>
-                    <p className="text-xs text-gray-600 mt-1">{card.subtitle}</p>
-                  </div>
-                </div>
+          {/* 移除城市选择，仅按推荐城市展示 */}
+          {/* 正反面图片 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* 正面 */}
+            <div className="rounded-2xl shadow-lg border border-white/20 overflow-hidden bg-white/90">
+              <div className="px-3 py-2 border-b text-gray-700 text-xs">正面 Front</div>
+              <div className="w-full h-64 flex items-center justify-center bg-white">
+                <img
+                  src={activePostcard.front}
+                  alt={`${activePostcard.city} 明信片正面`}
+                  className="max-w-full max-h-full object-contain"
+                  loading="lazy"
+                  onError={(e) => {
+                    const img = e.currentTarget as HTMLImageElement;
+                    img.src = 'https://placehold.co/800x480?text=Postcard+Front';
+                  }}
+                />
               </div>
-            ))}
+            </div>
+            {/* 背面 */}
+            <div className="rounded-2xl shadow-lg border border-white/20 overflow-hidden bg-white/90">
+              <div className="px-3 py-2 border-b text-gray-700 text-xs">背面 Back</div>
+              <div className="w-full h-64 flex items-center justify-center bg-white">
+                <img
+                  src={activePostcard.back}
+                  alt={`${activePostcard.city} 明信片背面`}
+                  className="max-w-full max-h-full object-contain"
+                  loading="lazy"
+                  onError={(e) => {
+                    const img = e.currentTarget as HTMLImageElement;
+                    img.src = 'https://placehold.co/800x480?text=Postcard+Back';
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </section>
+        {/* （移除通用明信片展示区） */}
 
         {/* 城市旅游景点照片展示区 */}
         <section>
@@ -81,7 +127,7 @@ const A: React.FC = () => {
             </div>
           </div>
           <div className={carouselBase} style={{ scrollSnapType: 'x mandatory' }}>
-            {attractions.map((item, idx) => (
+            {filteredAttractions.map((item, idx) => (
               <div
                 key={`attraction-${idx}`}
                 className={cardBase}
@@ -113,7 +159,7 @@ const A: React.FC = () => {
             </div>
           </div>
           <div className={carouselBase} style={{ scrollSnapType: 'x mandatory' }}>
-            {videos.map((v, idx) => (
+            {filteredVideos.map((v, idx) => (
               <div
                 key={`video-${idx}`}
                 className={cardBase}
