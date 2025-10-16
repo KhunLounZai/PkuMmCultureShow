@@ -10,6 +10,7 @@ import {
 import recommendationsData from '../data/recommendations.json';
 import PersonalityQuiz from '../components/PersonalityQuiz';
 import PersonalityResult from '../components/PersonalityResult';
+import Robot3D from '../components/Robot3D';
 
 interface QuizData {
   birthday: string;
@@ -82,16 +83,12 @@ const Recommendations: React.FC = () => {
         <div className="bg-gradient-to-r from-red-600 to-amber-600 text-white py-12">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold mb-4">{t('recommendations.title')}</h1>
-            <p className="text-xl opacity-90 mb-4">{t('recommendations.subtitle')}</p>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              <p className="text-lg">
-                🤖 <strong>缅缅AI智能推荐：</strong>基于您的个性特征，为您精心挑选最适合的缅甸文化体验！
-              </p>
-            </div>
+
           </div>
         </div>
         
         <PersonalityQuiz onComplete={handleQuizComplete} />
+        <Robot3D />
       </div>
     );
   }
@@ -104,16 +101,12 @@ const Recommendations: React.FC = () => {
         <div className="bg-gradient-to-r from-red-600 to-amber-600 text-white py-12">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold mb-4">{t('recommendations.title')}</h1>
-            <p className="text-xl opacity-90 mb-4">{t('recommendations.subtitle')}</p>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              <p className="text-lg">
-                🤖 <strong>缅缅AI智能推荐：</strong>基于您的个性分析，为您精心挑选最适合的缅甸文化体验！
-              </p>
-            </div>
+
           </div>
         </div>
         
         <PersonalityResult quizData={quizData} onRetake={handleRetakeQuiz} />
+        <Robot3D />
       </div>
     );
   }
@@ -124,7 +117,6 @@ const Recommendations: React.FC = () => {
       <div className="bg-gradient-to-r from-red-600 to-amber-600 text-white py-8">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold mb-3">{t('recommendations.title')}</h1>
-          <p className="text-lg opacity-90 mb-3">{t('recommendations.subtitle')}</p>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
             <p className="text-base">
               🤖 <strong>缅缅AI智能推荐：</strong>基于您的兴趣偏好和浏览历史，为您精心挑选最适合的缅甸文化体验！
@@ -157,15 +149,7 @@ const Recommendations: React.FC = () => {
           </div>
         </div>
 
-        {/* Personalized Recommendations Notice */}
-        {selectedCategory === 'all' && (
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-blue-800">
-              <span className="font-semibold">💡 个性化推荐：</span>
-              基于您的偏好为您精选推荐内容
-            </p>
-          </div>
-        )}
+
 
         {/* Recommendations Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -292,6 +276,7 @@ const Recommendations: React.FC = () => {
           </div>
         )}
       </div>
+      <Robot3D />
     </div>
   );
 };

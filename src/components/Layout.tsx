@@ -43,10 +43,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex justify-between items-center h-12">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                <span className="text-red-600 font-bold text-lg">🤖</span>
-              </div>
-              <span className="text-white font-bold text-xl">缅缅AI文化探索</span>
+              <img 
+                src="/images/logo.png" 
+                alt="Logo" 
+                className="w-8 h-8 rounded-full object-cover"
+              />
+              <span className="text-white font-bold text-xl">缅缅Ai : 城市明信片推荐与虚拟视频旅游</span>
             </Link>
 
             {/* Navigation removed (replaced by global bottom div nav) */}
@@ -95,9 +97,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <footer className="bg-gray-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="text-center">
-            <p className="text-gray-400">
-              © 2024 Myanmar Culture Exchange Platform. Discover the beauty of Myanmar.
-            </p>
           </div>
         </div>
       </footer>

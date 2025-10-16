@@ -1,118 +1,84 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MapPin, Video, Star } from 'lucide-react';
+import { ArrowRight, Globe } from 'lucide-react';
 import Robot3D from '../components/Robot3D';
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
 
-  const features = [
-    {
-      icon: Star,
-      title: t('nav.recommendations'),
-      description: t('recommendations.subtitle'),
-      link: '/recommendations',
-      color: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: MapPin,
-      title: t('nav.map'),
-      description: t('map.subtitle'),
-      link: '/map',
-      color: 'from-green-500 to-teal-500'
-    },
-    {
-      icon: Video,
-      title: t('nav.videos'),
-      description: t('videos.subtitle'),
-      link: '/videos',
-      color: 'from-blue-500 to-indigo-500'
-    }
-  ];
-
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-red-50">
       {/* Hero Section */}
-      <section className="relative py-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              {t('home.title')}
-            </h1>
-            <p className="text-base md:text-lg text-gray-600 mb-4 max-w-3xl mx-auto">
-              {t('home.subtitle')}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                to="/recommendations"
-                className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                {t('home.startExploring')}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </div>
-          </div>
+      <section className="relative py-12 px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 mx-4 rounded-3xl z-0 pointer-events-none">
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-orange-100/20 to-red-100/20" />
         </div>
-      </section>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 text-center md:text-left">
+            <img
+              src="/images/logo.png"
+              alt="平台 Logo"
+              className="w-20 h-20 md:w-28 md:h-28 rounded-full opacity-80 pointer-events-none select-none flex-shrink-0"
+            />
+            <div>
 
-      {/* Welcome Section */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-white/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-              {t('home.welcome')}
-            </h2>
-            <p className="text-base text-gray-600 max-w-2xl mx-auto">
-              {t('home.description')}
-            </p>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid md:grid-cols-3 gap-4 mb-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <Link
-                  key={index}
-                  to={feature.link}
-                  className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
-                >
-                  <div className={`h-1.5 bg-gradient-to-r ${feature.color}`}></div>
-                  <div className="p-4">
-                    <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-r ${feature.color} text-white mb-3`}>
-                      <Icon size={24} />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      {feature.description}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* AI Chat Section */}
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-4">
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                {t('home.meetMianMian')}
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
-                🤖 遇见缅缅AI机器人！它会在网页中陪伴您探索缅甸文化，为您提供智能导览和个性化建议。
+              <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
+                发现缅甸城市文化瑰宝
+              </h1>
+              <p className="text-base md:text-lg text-gray-600 mb-6 max-w-3xl mx-auto leading-relaxed">
+                只需要输入个性特征，即可获取适合你个性的旅游城市
               </p>
-            </div>
-            <div className="transform scale-90">
-              <Robot3D />
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
+                <Link
+                  to="/recommendations"
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                  {t('home.startExploring')}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-
+      {/* Platform Features Section + AI Robot */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">平台功能介绍</h2>
+            <p className="text-sm text-gray-600 max-w-lg mx-auto">
+              了解我们的核心功能，体验智能化、沉浸式的缅甸文化与旅行探索
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+            <div className="p-3 rounded-lg bg-white shadow-sm border border-gray-100">
+              <div className="text-lg mb-1">📮</div>
+              <h3 className="font-semibold text-gray-900 mb-1 text-xs">明信片推荐</h3>
+              <p className="text-xs text-gray-600">基于个性特征推荐城市明信片。</p>
+            </div>
+            <div className="p-3 rounded-lg bg-white shadow-sm border border-gray-100">
+              <div className="text-lg mb-1">🗺️</div>
+              <h3 className="font-semibold text-gray-900 mb-1 text-xs">交互式地图</h3>
+              <p className="text-xs text-gray-600">基于 OpenStreetMap 与 Leaflet，轻松浏览缅甸城市。</p>
+            </div>
+            <div className="p-3 rounded-lg bg-white shadow-sm border border-gray-100">
+              <div className="text-lg mb-1">🎥</div>
+              <h3 className="font-semibold text-gray-900 mb-1 text-xs">沉浸式城市视频</h3>
+              <p className="text-xs text-gray-600">沉浸式体验8秒AI虚拟视频。</p>
+            </div>
+            <div className="p-3 rounded-lg bg-white shadow-sm border border-gray-100">
+              <div className="text-lg mb-1">✈️</div>
+              <h3 className="font-semibold text-gray-900 mb-1 text-xs">模拟航班飞行</h3>
+              <p className="text-xs text-gray-600">模拟出从北京到推荐城市的航班飞行。</p>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <Robot3D />
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

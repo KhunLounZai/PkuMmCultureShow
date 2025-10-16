@@ -220,6 +220,31 @@
   font-size: 24px;
 }
 
+/* 新增：地图与目的地信息左右布局容器 */
+.map-info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* 去掉容器在横向布局下的底部外边距以避免多余空隙 */
+.map-info-row .map-container,
+.map-info-row .destination-info {
+  margin-bottom: 0;
+}
+
+/* 移动端回退为上下布局 */
+@media (max-width: 768px) {
+  .map-info-row {
+    grid-template-columns: 1fr;
+  }
+  .map-info-row .map-container,
+  .map-info-row .destination-info {
+    margin-bottom: 16px;
+  }
+}
+
 .destination-description {
   color: #666;
   line-height: 1.6;

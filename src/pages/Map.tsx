@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapPin, Info, Star, Camera, TreePine, Mountain, Waves } from 'lucide-react';
+import Robot3D from '../components/Robot3D';
 
 interface MapLocation {
   id: string;
@@ -276,6 +277,7 @@ const Map: React.FC = () => {
           </div>
         </div>
       </div>
+      <Robot3D />
     </div>
   );
 };

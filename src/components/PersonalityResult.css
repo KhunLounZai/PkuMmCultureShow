@@ -30,6 +30,25 @@
   opacity: 0.9;
 }
 
+/* 主要内容区域 - 左右布局 */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.right-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .main-recommendation {
   padding: 1rem;
 }
@@ -157,10 +176,8 @@
 }
 
 .secondary-recommendations {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  padding: 0 1rem 1rem;
+  /* 移除原有的 grid 布局，因为现在在右侧垂直排列 */
+  padding: 0;
 }
 
 .zodiac-content,
@@ -235,7 +252,8 @@
 .personal-summary {
   padding: 1rem;
   background: #f9fafb;
-  border-top: 2px solid #e5e7eb;
+  border-radius: 15px;
+  border: 2px solid #e5e7eb;
 }
 
 .personal-summary h3 {
@@ -332,7 +350,10 @@
     font-size: 2rem;
   }
   
-  .main-recommendation {
+  /* 移动端改为垂直布局 */
+  .main-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     padding: 1.5rem;
   }
   
@@ -347,9 +368,7 @@
   }
   
   .secondary-recommendations {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 0 1.5rem 1.5rem;
+    padding: 0;
   }
   
   .zodiac-content,

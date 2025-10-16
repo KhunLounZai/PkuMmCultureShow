@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Play, Clock, Eye, Heart, Filter } from 'lucide-react';
+import Robot3D from '../components/Robot3D';
 
 interface Video {
   id: string;
@@ -316,6 +317,7 @@ const Videos: React.FC = () => {
           </div>
         )}
       </div>
+      <Robot3D />
     </div>
   );
 };

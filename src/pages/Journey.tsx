@@ -13,6 +13,7 @@ import {
   generateFlightPath,
   calculateBearing
 } from '../utils/geoUtils';
+import Robot3D from '../components/Robot3D';
 import './Journey.css';
 
 interface JourneyData {
@@ -197,9 +198,9 @@ const Journey: React.FC = () => {
             ...provider.options,
             // 优化的错误处理配置
             errorTileUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0iI2Y0ZjRmNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwcHgiIGZpbGw9IiM5OTkiPuWKoOi9veWksei0pTwvdGV4dD48L3N2Zz4=',
-            timeout: 5000, // 5秒超时
-            retryDelay: 1000,
-            retryLimit: 1, // 减少重试次数
+            // timeout: 5000, // 移除不支持的timeout属性
+            // retryDelay: 1000, // 移除不支持的retryDelay属性
+            // retryLimit: 1, // 移除不支持的retryLimit属性
             keepBuffer: 2, // 减少缓冲区
             updateWhenZooming: false, // 缩放时不更新瓦片
             updateWhenIdle: true // 只在空闲时更新
@@ -637,32 +638,33 @@ const Journey: React.FC = () => {
         </div>
       )}
 
-      {/* 真实地图区域 */}
-      <div className="map-container">
-        <div ref={mapRef} className="leaflet-map"></div>
-      </div>
+      {/* 地图与目的地信息左右布局 */}
+      <div className="map-info-row">
+        <div className="map-container">
+          <div ref={mapRef} className="leaflet-map"></div>
+        </div>
 
-      {/* 目的地信息 */}
-      <div className="destination-info">
-        <div className="destination-card">
-          <img 
-            src={journeyData.image} 
-            alt={journeyData.city}
-            className="destination-image"
-          />
-          <div className="destination-content">
-            <h2>目的地: {journeyData.city}</h2>
-            <p className="destination-description">
-              {journeyData.description}
-            </p>
-            
-            <div className="activities-section">
-              <h3>推荐活动:</h3>
-              <ul className="activities-list">
-                {journeyData.activities.map((activity, index) => (
-                  <li key={index}>{activity}</li>
-                ))}
-              </ul>
+        <div className="destination-info">
+          <div className="destination-card">
+            <img 
+              src={journeyData.image} 
+              alt={journeyData.city}
+              className="destination-image"
+            />
+            <div className="destination-content">
+              <h2>目的地: {journeyData.city}</h2>
+              <p className="destination-description">
+                {journeyData.description}
+              </p>
+              
+              <div className="activities-section">
+                <h3>推荐活动:</h3>
+                <ul className="activities-list">
+                  {journeyData.activities.map((activity, index) => (
+                    <li key={index}>{activity}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -693,6 +695,7 @@ const Journey: React.FC = () => {
           </div>
         )}
       </div>
+      <Robot3D />
     </div>
   );
 };

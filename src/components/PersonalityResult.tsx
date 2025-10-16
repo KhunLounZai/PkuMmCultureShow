@@ -16,6 +16,35 @@ interface PersonalityResultProps {
   onRetake: () => void;
 }
 
+// 定义不同类型的推荐结果接口
+interface BaseRecommendation {
+  city: string;
+  cityEn: string;
+  description: string;
+  activities: string[];
+  image: string;
+}
+
+interface MBTIRecommendation extends BaseRecommendation {
+  personality: string;
+}
+
+interface ZodiacRecommendation extends BaseRecommendation {
+  personality: string;
+}
+
+interface ChineseZodiacRecommendation extends BaseRecommendation {
+  trait: string;
+  recommendation: string;
+}
+
+interface DayOfWeekRecommendation extends BaseRecommendation {
+  trait?: string;
+  personality?: string;
+}
+
+type RecommendationResult = MBTIRecommendation | ZodiacRecommendation | ChineseZodiacRecommendation | DayOfWeekRecommendation;
+
 const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetake }) => {
   const navigate = useNavigate();
 
@@ -49,16 +78,27 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
   };
 
   // 根据选择的类别获取相应的推荐结果
-  const getRecommendationResult = () => {
+  // 获取个性特质的辅助函数
+  const getPersonalityTrait = (result: RecommendationResult): string => {
+    if ('personality' in result && result.personality) {
+      return result.personality;
+    }
+    if ('trait' in result && result.trait) {
+      return result.trait;
+    }
+    return '未知特质';
+  };
+
+  const getRecommendationResult = (): RecommendationResult | null => {
     switch (quizData.category) {
       case 'mbti':
-        return personalityData.mbtiMatching[quizData.mbti as keyof typeof personalityData.mbtiMatching];
+        return personalityData.mbtiMatching[quizData.mbti as keyof typeof personalityData.mbtiMatching] as MBTIRecommendation;
       case 'westernZodiac':
-        return personalityData.zodiacMatching[quizData.westernZodiac as keyof typeof personalityData.zodiacMatching];
+        return personalityData.zodiacMatching[quizData.westernZodiac as keyof typeof personalityData.zodiacMatching] as ZodiacRecommendation;
       case 'chineseZodiac':
-        return personalityData.chineseZodiacMatching[quizData.chineseZodiac as keyof typeof personalityData.chineseZodiacMatching];
+        return personalityData.chineseZodiacMatching[quizData.chineseZodiac as keyof typeof personalityData.chineseZodiacMatching] as ChineseZodiacRecommendation;
       case 'dayOfWeek':
-        return personalityData.dayOfWeekMatching[quizData.dayOfWeek as keyof typeof personalityData.dayOfWeekMatching];
+        return personalityData.dayOfWeekMatching[quizData.dayOfWeek as keyof typeof personalityData.dayOfWeekMatching] as DayOfWeekRecommendation;
       default:
         return null;
     }
@@ -75,99 +115,103 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
       <div className="result-container">
         <div className="result-header">
           <h2>🎯 你的专属缅甸文化推荐</h2>
-          <p>基于你的个性分析，我们为你精心挑选了最适合的文化体验</p>
+          <p>基于你的个性分析，我们为你精心挑选了最适合的城市文化体验</p>
         </div>
 
-        {/* 主要城市推荐 */}
-        <div className="main-recommendation">
-          <div className="recommendation-card primary">
-            <div className="card-header">
-              <h3>🏛️ 为你推荐的城市</h3>
-              <span className="personality-badge">{result.personality}</span>
-            </div>
-            
-            <div className="city-info">
-              <div className="city-image">
-                <img src={result.image} alt={result.city} />
-                <div className="city-overlay">
-                  <h4>{result.city}</h4>
-                  <p>{result.cityEn}</p>
-                </div>
-              </div>
+        {/* 主要内容区域 - 左右布局 */}
+        <div className="main-content">
+          {/* 左侧：主要城市推荐 */}
+          <div className="left-section">
+            <div className="recommendation-card primary">
+              <div className="card-header">
+                 <h3>🏛️ 为你推荐的城市</h3>
+                 <span className="personality-badge">{getPersonalityTrait(result)}</span>
+               </div>
               
-              <div className="city-description">
-                <p className="description-text">{result.description}</p>
+              <div className="city-info">
+                <div className="city-image">
+                  <img src={result.image} alt={result.city} />
+                  <div className="city-overlay">
+                    <h4>{result.city}</h4>
+                    <p>{result.cityEn}</p>
+                  </div>
+                </div>
                 
-                <div className="activities">
-                  <h5>🎨 推荐体验</h5>
-                  <div className="activity-tags">
-                    {result.activities.map((activity, index) => (
-                      <span key={index} className="activity-tag">{activity}</span>
-                    ))}
+                <div className="city-description">
+                  <p className="description-text">{result.description}</p>
+                  
+                  <div className="activities">
+                    <h5>🎨 推荐体验</h5>
+                    <div className="activity-tags">
+                      {result.activities.map((activity, index) => (
+                        <span key={index} className="activity-tag">{activity}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 根据选择的类别显示相应的详细信息 */}
-        <div className="secondary-recommendations">
-          <div className="recommendation-card secondary">
-            <div className="card-header">
-              <h3>
-                {quizData.category === 'mbti' && '🧠 MBTI 人格分析'}
-                {quizData.category === 'westernZodiac' && '⭐ 星座专属活动'}
-                {quizData.category === 'chineseZodiac' && '🐉 生肖文化洞察'}
-                {quizData.category === 'dayOfWeek' && '🐅 缅甸七日生肖特质'}
-              </h3>
-              <span className="category-badge">
-                {quizData.category === 'mbti' && quizData.mbti}
-                {quizData.category === 'westernZodiac' && quizData.westernZodiac}
-                {quizData.category === 'chineseZodiac' && quizData.chineseZodiac}
-                {quizData.category === 'dayOfWeek' && quizData.dayOfWeek}
-              </span>
-            </div>
-            
-            <div className="category-content">
-              <div className="trait-highlight">
-                <span className="trait-label">个性特质：</span>
-                <span className="trait-value">{result.personality || result.trait}</span>
+          {/* 右侧：详细信息和个人档案 */}
+          <div className="right-section">
+            {/* 根据选择的类别显示相应的详细信息 */}
+            <div className="recommendation-card secondary">
+              <div className="card-header">
+                <h3>
+                  {quizData.category === 'mbti' && '🧠 MBTI 人格分析'}
+                  {quizData.category === 'westernZodiac' && '⭐ 星座专属活动'}
+                  {quizData.category === 'chineseZodiac' && '🐉 生肖文化洞察'}
+                  {quizData.category === 'dayOfWeek' && '🐅 缅甸七日生肖特质'}
+                </h3>
+                <span className="category-badge">
+                  {quizData.category === 'mbti' && quizData.mbti}
+                  {quizData.category === 'westernZodiac' && quizData.westernZodiac}
+                  {quizData.category === 'chineseZodiac' && quizData.chineseZodiac}
+                  {quizData.category === 'dayOfWeek' && quizData.dayOfWeek}
+                </span>
               </div>
-              <p className="recommendation-text">{result.description}</p>
+              
+              <div className="category-content">
+                 <div className="trait-highlight">
+                   <span className="trait-label">个性特质：</span>
+                   <span className="trait-value">{getPersonalityTrait(result)}</span>
+                 </div>
+                 <p className="recommendation-text">{result.description}</p>
+               </div>
             </div>
-          </div>
-        </div>
 
-        {/* 个人信息总结 */}
-        <div className="personal-summary">
-          <h3>📊 你的个性档案</h3>
-          <div className="summary-grid">
-            <div className="summary-item">
-              <span className="summary-label">选择类别</span>
-              <span className="summary-value">
-                {quizData.category === 'mbti' && 'MBTI 人格类型'}
-                {quizData.category === 'westernZodiac' && '西方星座'}
-                {quizData.category === 'chineseZodiac' && '中国生肖'}
-                {quizData.category === 'dayOfWeek' && '缅甸七日生肖'}
-              </span>
-            </div>
-            <div className="summary-item">
-              <span className="summary-label">你的选择</span>
-              <span className="summary-value">
-                {quizData.category === 'mbti' && quizData.mbti}
-                {quizData.category === 'westernZodiac' && quizData.westernZodiac}
-                {quizData.category === 'chineseZodiac' && quizData.chineseZodiac}
-                {quizData.category === 'dayOfWeek' && quizData.dayOfWeek}
-              </span>
-            </div>
-            <div className="summary-item">
-              <span className="summary-label">推荐城市</span>
-              <span className="summary-value">{result.city}</span>
-            </div>
-            <div className="summary-item">
-              <span className="summary-label">个性特质</span>
-              <span className="summary-value">{result.personality || result.trait}</span>
+            {/* 个人信息总结 */}
+            <div className="personal-summary">
+              <h3>📊 你的个性档案</h3>
+              <div className="summary-grid">
+                <div className="summary-item">
+                  <span className="summary-label">选择类别</span>
+                  <span className="summary-value">
+                    {quizData.category === 'mbti' && 'MBTI 人格类型'}
+                    {quizData.category === 'westernZodiac' && '西方星座'}
+                    {quizData.category === 'chineseZodiac' && '中国生肖'}
+                    {quizData.category === 'dayOfWeek' && '缅甸七日生肖'}
+                  </span>
+                </div>
+                <div className="summary-item">
+                  <span className="summary-label">你的选择</span>
+                  <span className="summary-value">
+                    {quizData.category === 'mbti' && quizData.mbti}
+                    {quizData.category === 'westernZodiac' && quizData.westernZodiac}
+                    {quizData.category === 'chineseZodiac' && quizData.chineseZodiac}
+                    {quizData.category === 'dayOfWeek' && quizData.dayOfWeek}
+                  </span>
+                </div>
+                <div className="summary-item">
+                  <span className="summary-label">推荐城市</span>
+                  <span className="summary-value">{result.city}</span>
+                </div>
+                <div className="summary-item">
+                   <span className="summary-label">个性特质</span>
+                   <span className="summary-value">{getPersonalityTrait(result)}</span>
+                 </div>
+              </div>
             </div>
           </div>
         </div>
