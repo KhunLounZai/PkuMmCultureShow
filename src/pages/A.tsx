@@ -319,7 +319,9 @@ const A: React.FC = () => {
           <section>
             <div className="flex items-end justify-between mb-4">
               <div>
-                <h2 className={sectionTitle}>{t('aPage.postcardTitle')}</h2>
+                <h2 className={sectionTitle}>
+                  {t('aPage.postcardTitle')} <span className="text-red-600 font-bold">({t('aPage.postcardReminder')})</span>
+                </h2>
                 <p className={sectionDesc}>{t('aPage.postcardDescription')}</p>
               </div>
             </div>
@@ -473,7 +475,7 @@ const A: React.FC = () => {
             </div>
           </section>
         </div>
-        <Robot3D />
+        {/* <Robot3D /> */}
       </div>
     </>
   );

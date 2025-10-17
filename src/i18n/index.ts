@@ -188,6 +188,7 @@ const resources = {
       // A Page (Postcards & Videos)
       aPage: {
         postcardTitle: 'Get Recommended City Postcards',
+        postcardReminder: '!!!Please get physical cards from staff',
         postcardDescription: 'Please get physical cards from staff',
         frontSide: 'Front',
         backSide: 'Back',
@@ -427,6 +428,7 @@ const resources = {
       // A Page (Postcards & Videos)
       aPage: {
         postcardTitle: '获取推荐城市明信片',
+        postcardReminder: '!!!请跟工作人员获取实体卡',
         postcardDescription: '请跟工作人员获取实体卡',
         frontSide: '正面',
         backSide: '背面',
