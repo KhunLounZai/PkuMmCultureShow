@@ -1,219 +1,233 @@
-# 缅甸文化展示平台 (Myanmar Culture Show Platform)
+# Myanmar Culture Show Platform
 
-## 项目概述
+## Project Overview
 
-缅甸文化展示平台是一个基于 React + TypeScript + Vite 构建的现代化 Web 应用程序，旨在通过交互式体验展示缅甸丰富的文化遗产、历史景观和自然美景。该平台集成了个性化推荐系统、交互式地图、多媒体内容展示和 AI 飞行模拟等功能，为用户提供沉浸式的缅甸文化探索体验。
+The Myanmar Culture Show Platform is a modern web application built with React + TypeScript + Vite, designed to showcase Myanmar's rich cultural heritage, historical landscapes, and natural beauty through interactive experiences. The platform integrates a personalized recommendation system, interactive maps, multimedia content display, and AI flight simulation to provide users with an immersive exploration of Myanmar culture.
 
-### 核心价值
-- **文化传播**：通过数字化手段传播缅甸传统文化和历史
-- **智能推荐**：基于用户个性特征提供个性化旅游推荐
-- **交互体验**：提供丰富的交互式功能和多媒体内容
-- **国际化支持**：完整的中英文双语支持
+### Core Values
+- **Cultural Dissemination**: Spread Myanmar's traditional culture and history through digital means
+- **Intelligent Recommendations**: Provide personalized travel recommendations based on user personality traits
+- **Interactive Experience**: Offer rich interactive features and multimedia content
+- **Internationalization Support**: Complete bilingual support in Chinese and English
 
-## 功能特性
+## Features
 
-### 🏠 主页 (Home)
-- 项目介绍和核心功能展示
-- 响应式设计，适配多种设备
-- 优雅的渐变背景和动画效果
-- 快速导航到各功能模块
+### 🏠 Home Page
+- Project introduction and core feature showcase
+- Responsive design adapted for multiple devices
+- Elegant gradient backgrounds and animation effects
+- Quick navigation to various functional modules
 
-### 🎯 个性化推荐 (Recommendations)
-- **性格测试系统**：基于心理学理论的多维度性格评估
-- **智能匹配算法**：根据性格特征推荐最适合的缅甸城市
-- **个性化结果**：详细的性格分析和城市推荐理由
-- **数据持久化**：本地存储用户测试结果
+### 🎯 Personalized Recommendations
+- **Personality Test System**: Multi-dimensional personality assessment based on psychological theory
+- **Intelligent Matching Algorithm**: Recommend the most suitable Myanmar cities based on personality traits
+- **Personalized Results**: Detailed personality analysis and city recommendation reasoning
+- **Data Persistence**: Local storage of user test results
 
-### 🗺️ 交互式地图 (Map)
-- 基于 Leaflet 的高性能地图渲染
-- 缅甸主要城市标记和信息展示
-- 多种地图图层支持（街道图、卫星图等）
-- 响应式地图控件和交互功能
+### 🗺️ Interactive Map
+- High-performance map rendering based on Leaflet
+- Myanmar major city markers and information display
+- Multiple map layer support (street maps, satellite maps, etc.)
+- Responsive map controls and interactive features
 
-### 🎬 多媒体展示 (Videos/A页面)
-- **明信片展示**：5个缅甸城市的精美明信片正反面展示
-- **视频播放**：城市文化和风景视频内容
-- **交互式城市选择**：点击地图标记切换城市内容
-- **全屏播放支持**：优化的视频播放体验
+### 🎬 Multimedia Display (Videos/A Page)
+- **Postcard Display**: Beautiful front and back postcard displays of 5 Myanmar cities
+- **Video Playback**: City culture and landscape video content
+- **Interactive City Selection**: Click map markers to switch city content
+- **Fullscreen Playback Support**: Optimized video playback experience
 
-### ✈️ AI 飞行模拟 (Journey)
-- 从北京到缅甸的虚拟飞行体验
-- 实时飞行路径动画和进度显示
-- 飞行信息面板（距离、时间、坐标等）
-- 离线模式支持和错误恢复机制
+### ✈️ AI Flight Simulation (Journey)
+- Virtual flight experience from Beijing to Myanmar
+- Real-time flight path animation and progress display
+- Flight information panel (distance, time, coordinates, etc.)
+- Offline mode support and error recovery mechanism
 
-### 🌐 国际化支持
-- 完整的中英文双语界面
-- 动态语言切换功能
-- 本地化的日期、数字和货币格式
-- 文化适配的内容展示
+### 🌐 Internationalization Support
+- Complete bilingual interface in Chinese and English
+- Dynamic language switching functionality
+- Localized date, number, and currency formats
+- Culturally adapted content display
 
-## 技术栈
+## Technology Stack
 
-### 前端框架
-- **React 18.3.1**：现代化的用户界面库
-- **TypeScript**：类型安全的 JavaScript 超集
-- **Vite 6.3.5**：快速的构建工具和开发服务器
+### Frontend Framework
+- **React 18.3.1**: Modern user interface library
+- **TypeScript**: Type-safe JavaScript superset
+- **Vite 6.3.5**: Fast build tool and development server
 
-### 样式和UI
-- **TailwindCSS 3.4.17**：实用优先的 CSS 框架
-- **Lucide React**：现代化的图标库
-- **响应式设计**：移动端优先的设计理念
+### Styling and UI
+- **TailwindCSS 3.4.17**: Utility-first CSS framework
+- **Lucide React**: Modern icon library
+- **Responsive Design**: Mobile-first design philosophy
 
-### 核心依赖
-- **React Router DOM 7.9.3**：客户端路由管理
-- **Leaflet 1.9.4**：开源地图库
-- **i18next + react-i18next**：国际化解决方案
-- **Zustand 5.0.3**：轻量级状态管理
+### Core Dependencies
+- **React Router DOM 7.9.3**: Client-side routing management
+- **Leaflet 1.9.4**: Open-source mapping library
+- **i18next + react-i18next**: Internationalization solution
+- **Zustand 5.0.3**: Lightweight state management
 
-### 开发工具
-- **ESLint**：代码质量检查
-- **PostCSS + Autoprefixer**：CSS 后处理
-- **TypeScript ESLint**：TypeScript 代码规范
+### Development Tools
+- **ESLint**: Code quality checking
+- **PostCSS + Autoprefixer**: CSS post-processing
+- **TypeScript ESLint**: TypeScript code standards
 
-## 安装指南
+## Installation Guide
 
-### 环境要求
+### Environment Requirements
 - Node.js >= 18.0.0
-- npm >= 8.0.0 或 yarn >= 1.22.0
+- npm >= 8.0.0 or yarn >= 1.22.0
 
-### 安装步骤
+### Installation Steps
 
-1. **克隆项目**
+1. **Clone the Project**
 ```bash
 git clone <repository-url>
 cd PkuMmCultureShow
 ```
 
-2. **安装依赖**
+2. **Install Dependencies**
 ```bash
 npm install
-# 或
+# or
 yarn install
 ```
 
-3. **启动开发服务器**
+3. **Start Development Server**
 ```bash
 npm run dev
-# 或
+# or
 yarn dev
 ```
 
-4. **访问应用**
-打开浏览器访问 `http://localhost:5173`
+4. **Access Application**
+Open your browser and visit `http://localhost:5173`
 
-### 构建部署
+### Build and Deploy
 
-1. **构建生产版本**
+1. **Build Production Version**
 ```bash
 npm run build
-# 或
+# or
 yarn build
 ```
 
-2. **预览构建结果**
+2. **Preview Build Results**
 ```bash
 npm run preview
-# 或
+# or
 yarn preview
 ```
 
-3. **代码检查**
+3. **Code Linting**
 ```bash
 npm run lint
-# 或
+# or
 yarn lint
 ```
 
-## 使用方法
+## Usage Instructions
 
-### 基本导航
-1. 访问主页了解项目概况
-2. 进入推荐页面完成性格测试
-3. 查看个性化的城市推荐结果
-4. 在地图页面探索缅甸地理位置
-5. 在视频页面观看城市文化内容
-6. 体验 AI 飞行模拟功能
+### Basic Navigation
+1. Visit the homepage to understand the project overview
+2. Enter the recommendations page to complete the personality test
+3. View personalized city recommendation results
+4. Explore Myanmar's geographical locations on the map page
+5. Watch city cultural content on the videos page
+6. Experience the AI flight simulation feature
 
-### 个性化推荐流程
-1. 点击"开始测试"按钮
-2. 回答 12 道性格测试题目
-3. 查看详细的性格分析结果
-4. 获取个性化的城市推荐
-5. 点击"开始出发"进入飞行模拟
+### Personalized Recommendation Process
+1. Click the "Start Test" button
+2. Answer 12 personality test questions
+3. View detailed personality analysis results
+4. Get personalized city recommendations
+5. Click "Start Journey" to enter flight simulation
 
-### 多媒体内容浏览
-1. 在视频页面选择感兴趣的城市
-2. 查看城市明信片正反面设计
-3. 观看城市文化和风景视频
-4. 使用全屏模式获得更好体验
+### Multimedia Content Browsing
+1. Select a city of interest on the videos page
+2. View the front and back designs of city postcards
+3. Watch city culture and landscape videos
+4. Use fullscreen mode for a better experience
 
-### 语言切换
-- 点击右上角的语言切换按钮
-- 支持中文和英文界面切换
-- 所有内容都有对应的本地化版本
+### Language Switching
+- Click the language switch button in the top right corner
+- Support switching between Chinese and English interfaces
+- All content has corresponding localized versions
 
-## 项目结构
+## Project Structure
 
 ```
 PkuMmCultureShow/
-├── public/                 # 静态资源
-│   ├── images/            # 图片资源
-│   │   ├── cities/        # 城市图片
-│   │   ├── postcards/     # 明信片图片
-│   │   └── videos/        # 视频文件
-│   └── favicon.svg        # 网站图标
-├── src/                   # 源代码
-│   ├── components/        # 可复用组件
-│   ├── pages/            # 页面组件
-│   ├── data/             # 静态数据
-│   ├── utils/            # 工具函数
-│   ├── hooks/            # 自定义 Hooks
-│   ├── i18n/             # 国际化配置
-│   └── lib/              # 第三方库配置
-├── .trae/                # 项目文档
-└── dist/                 # 构建输出
+├── public/                 # Static resources
+│   ├── images/            # Image resources
+│   │   ├── cities/        # City images
+│   │   ├── postcards/     # Postcard images
+│   │   └── videos/        # Video files
+│   └── favicon.svg        # Website icon
+├── src/                   # Source code
+│   ├── components/        # Reusable components
+│   ├── pages/            # Page components
+│   ├── data/             # Static data
+│   ├── utils/            # Utility functions
+│   ├── hooks/            # Custom Hooks
+│   ├── i18n/             # Internationalization config
+│   └── lib/              # Third-party library config
+├── .trae/                # Project documentation
+└── dist/                 # Build output
 ```
 
-## 部署说明
+## Deployment Instructions
 
-### Vercel 部署（推荐）
-1. 连接 GitHub 仓库到 Vercel
-2. 配置构建命令：`npm run build`
-3. 配置输出目录：`dist`
-4. 自动部署完成
+### Vercel Deployment (Recommended)
+1. Connect GitHub repository to Vercel
+2. Configure build command: `npm run build`
+3. Configure output directory: `dist`
+4. Automatic deployment completion
 
-### 其他平台部署
-- **Netlify**：支持拖拽部署和 Git 集成
-- **GitHub Pages**：适合开源项目展示
-- **自建服务器**：使用 Nginx 或 Apache 托管静态文件
+### Other Platform Deployment
+- **Netlify**: Support drag-and-drop deployment and Git integration
+- **GitHub Pages**: Suitable for open-source project showcase
+- **Self-hosted Server**: Use Nginx or Apache to host static files
 
-## 贡献指南
+## Contributing Guidelines
 
-### 开发规范
-- 使用 TypeScript 进行类型安全开发
-- 遵循 ESLint 代码规范
-- 组件采用函数式编程风格
-- 使用 Hooks 管理组件状态
+### Development Standards
+- Use TypeScript for type-safe development
+- Follow ESLint code standards
+- Components use functional programming style
+- Use Hooks for component state management
 
-### 提交规范
-- feat: 新功能
-- fix: 修复问题
-- docs: 文档更新
-- style: 代码格式调整
-- refactor: 代码重构
+### Commit Standards
+- feat: New features
+- fix: Bug fixes
+- docs: Documentation updates
+- style: Code formatting changes
+- refactor: Code refactoring
+- test: Test additions or modifications
+- chore: Build process or auxiliary tool changes
 
-## 许可证
+### Pull Request Process
+1. Fork the project repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-本项目采用 MIT 许可证，详见 LICENSE 文件。
+## License
 
-## 联系方式
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-如有问题或建议，请通过以下方式联系：
-- 项目仓库：[GitHub Repository]
-- 邮箱：[Contact Email]
-- 文档：查看 `.trae/documents/` 目录下的技术文档
+## Contact Information
+
+- **Project Repository**: [GitHub Repository](https://github.com/your-username/PkuMmCultureShow)
+- **Issue Reporting**: [GitHub Issues](https://github.com/your-username/PkuMmCultureShow/issues)
+- **Documentation**: Located in the `.trae/documents/` directory
+
+## Acknowledgments
+
+- Thanks to all contributors who participated in this project
+- Special thanks to the Myanmar cultural consultants for their guidance
+- Thanks to the open-source community for providing excellent tools and libraries
 
 ---
 
-**缅甸文化展示平台** - 让世界了解缅甸，让缅甸走向世界 🇲🇲
+**Myanmar Culture Show Platform** - Bridging cultures through technology, showcasing Myanmar's beauty to the world.
