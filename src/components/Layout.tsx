@@ -18,10 +18,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   const navTabs = [
-    { path: '/', name: '首页' },
-    { path: '/recommendations', name: '推荐页面' },
-    { path: '/journey', name: '旅程页面' },
-    { path: '/a', name: '虚拟旅行' }
+    { path: '/', name: t('nav.home') },
+    { path: '/recommendations', name: t('nav.recommendations') },
+    { path: '/journey', name: t('nav.map') },
+    { path: '/a', name: t('nav.videos') }
   ];
 
   const handleTabClick = (path: string) => {
@@ -48,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 alt="Logo" 
                 className="w-8 h-8 rounded-full object-cover"
               />
-              <span className="text-white font-bold text-xl">缅缅Ai : 城市明信片推荐与虚拟视频旅游</span>
+              <span className="text-white font-bold text-xl">{t('brand.name')}</span>
             </Link>
 
             {/* Navigation removed (replaced by global bottom div nav) */}

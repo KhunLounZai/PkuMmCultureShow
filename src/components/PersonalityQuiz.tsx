@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './PersonalityQuiz.css';
 
 interface QuizData {
@@ -16,29 +17,27 @@ interface PersonalityQuizProps {
 type CategoryType = 'mbti' | 'chineseZodiac' | 'westernZodiac' | 'dayOfWeek' | null;
 
 const PersonalityQuiz: React.FC<PersonalityQuizProps> = ({ onComplete }) => {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>(null);
   const [selectedValue, setSelectedValue] = useState<string>('');
 
   const categories = [
-    { id: 'mbti', name: 'MBTI 人格类型', icon: '🧠', description: '了解你的性格特征' },
-    { id: 'chineseZodiac', name: '生肖', icon: '🐉', description: '传统生肖文化' },
-    { id: 'dayOfWeek', name: '缅甸七日生肖', icon: '🐅', description: '传统七日守护动物' },
-    { id: 'westernZodiac', name: '星座', icon: '⭐', description: '西方星座运势' }
+    { id: 'mbti', name: t('personalityQuiz.categories.mbti.name'), icon: '🧠', description: t('personalityQuiz.categories.mbti.description') },
+    { id: 'chineseZodiac', name: t('personalityQuiz.categories.chineseZodiac.name'), icon: '🐉', description: t('personalityQuiz.categories.chineseZodiac.description') },
+    { id: 'dayOfWeek', name: t('personalityQuiz.categories.dayOfWeek.name'), icon: '🐅', description: t('personalityQuiz.categories.dayOfWeek.description') },
+    { id: 'westernZodiac', name: t('personalityQuiz.categories.westernZodiac.name'), icon: '⭐', description: t('personalityQuiz.categories.westernZodiac.description') }
   ];
 
-  const chineseZodiacs = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
+  const chineseZodiacs = t('personalityQuiz.options.chineseZodiac', { returnObjects: true }) as string[];
   
-  const westernZodiacs = [
-    '白羊座', '金牛座', '双子座', '巨蟹座', '狮子座', '处女座',
-    '天秤座', '天蝎座', '射手座', '摩羯座', '水瓶座', '双鱼座'
-  ];
+  const westernZodiacs = t('personalityQuiz.options.westernZodiac', { returnObjects: true }) as string[];
 
   const mbtiTypes = [
     'INTJ', 'INTP', 'ENTJ', 'ENTP', 'INFJ', 'INFP', 'ENFJ', 'ENFP',
     'ISTJ', 'ISFJ', 'ESTJ', 'ESFJ', 'ISTP', 'ISFP', 'ESTP', 'ESFP'
   ];
 
-  const daysOfWeek = ['周一 🐅 老虎', '周二 🦁 狮子', '周三 🐘 象', '周四 🐀 老鼠', '周五 🐹 豚鼠', '周六 🐉 龙', '周日 🦅 人身鸟首'];
+  const daysOfWeek = t('personalityQuiz.options.dayOfWeek', { returnObjects: true }) as string[];
 
   const handleCategorySelect = (categoryId: CategoryType) => {
     setSelectedCategory(categoryId);
@@ -83,8 +82,8 @@ const PersonalityQuiz: React.FC<PersonalityQuizProps> = ({ onComplete }) => {
     <div className="personality-quiz">
       <div className="quiz-container">
         <div className="quiz-header">
-          <h2>🔮 AI个性化推荐测试</h2>
-          <p>选择一个类别，我们将为你推荐最适合的缅甸文化体验</p>
+          <h2>{t('personalityQuiz.header.title')}</h2>
+          <p>{t('personalityQuiz.header.description')}</p>
         </div>
 
         {!selectedCategory ? (
@@ -109,7 +108,7 @@ const PersonalityQuiz: React.FC<PersonalityQuizProps> = ({ onComplete }) => {
           <div className="options-selection">
             <div className="selection-header">
               <button className="back-btn" onClick={handleBack}>
-                ← 返回
+                ← {t('personalityQuiz.back')}
               </button>
               <h3>
                 {categories.find(cat => cat.id === selectedCategory)?.icon} {' '}
@@ -135,7 +134,7 @@ const PersonalityQuiz: React.FC<PersonalityQuizProps> = ({ onComplete }) => {
                 className="submit-btn active"
                 onClick={handleSubmit}
               >
-                🎯 获取个性化推荐
+                🎯 {t('personalityQuiz.submit')}
               </button>
             )}
           </div>

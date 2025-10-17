@@ -98,11 +98,11 @@ const Videos: React.FC = () => {
   ];
 
   const categories = [
-    { id: 'all', label: '全部', labelEn: 'All' },
-    { id: 'cultural', label: '文化', labelEn: 'Cultural' },
-    { id: 'natural', label: '自然', labelEn: 'Natural' },
-    { id: 'festival', label: '节日', labelEn: 'Festival' },
-    { id: 'food', label: '美食', labelEn: 'Food' }
+    { id: 'all', label: t('videos.categories.all'), labelEn: 'All' },
+    { id: 'cultural', label: t('videos.categories.cultural'), labelEn: 'Cultural' },
+    { id: 'natural', label: t('videos.categories.natural'), labelEn: 'Natural' },
+    { id: 'festival', label: t('videos.categories.festival'), labelEn: 'Festival' },
+    { id: 'food', label: t('videos.categories.food'), labelEn: 'Food' }
   ];
 
   const filteredVideos = selectedCategory === 'all' 
@@ -141,7 +141,7 @@ const Videos: React.FC = () => {
           </p>
           <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-3 max-w-3xl mx-auto">
             <p className="text-base text-purple-800">
-              🎬 <strong>缅缅AI视频导游</strong>基于您的兴趣和观看历史，为您精选最精彩的缅甸文化视频内容！
+              <span dangerouslySetInnerHTML={{ __html: t('videos.smartGuide') }} />
             </p>
           </div>
         </div>
@@ -151,7 +151,7 @@ const Videos: React.FC = () => {
           <div className="flex items-center space-x-2 text-gray-600">
             <Filter size={20} />
             <span className="font-medium">
-              {i18n.language === 'zh' ? '分类筛选' : 'Filter by Category'}
+              {t('videos.filterByCategory')}
             </span>
           </div>
           {categories.map((category) => {
@@ -180,7 +180,7 @@ const Videos: React.FC = () => {
                 <div className="text-white text-center">
                   <Play size={64} className="mx-auto mb-4 opacity-50" />
                   <p className="text-lg">
-                    {i18n.language === 'zh' ? '视频播放器占位符' : 'Video Player Placeholder'}
+                    {t('videos.playerPlaceholder')}
                   </p>
                   <p className="text-sm opacity-75 mt-2">
                     {i18n.language === 'zh' ? selectedVideo.title : selectedVideo.titleEn}
@@ -211,7 +211,7 @@ const Videos: React.FC = () => {
                   </div>
                   <div className="flex items-center space-x-1">
                     <Eye size={16} />
-                    <span>{formatViews(selectedVideo.views)} {i18n.language === 'zh' ? '次观看' : 'views'}</span>
+                    <span>{formatViews(selectedVideo.views)} {t('videos.views')}</span>
                   </div>
                 </div>
               </div>
@@ -268,10 +268,7 @@ const Videos: React.FC = () => {
                 {/* Category Badge */}
                 <div className="absolute top-3 left-3">
                   <span className="bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">
-                    {video.category === 'cultural' && (i18n.language === 'zh' ? '文化' : 'Cultural')}
-                    {video.category === 'natural' && (i18n.language === 'zh' ? '自然' : 'Natural')}
-                    {video.category === 'festival' && (i18n.language === 'zh' ? '节日' : 'Festival')}
-                    {video.category === 'food' && (i18n.language === 'zh' ? '美食' : 'Food')}
+                    {t(`videos.categories.${video.category}`)}
                   </span>
                 </div>
               </div>
@@ -302,7 +299,7 @@ const Videos: React.FC = () => {
                   className="w-full mt-3 px-3 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-200 font-medium flex items-center justify-center space-x-2 text-sm"
                 >
                   <Play size={18} />
-                  <span>{i18n.language === 'zh' ? '观看视频' : 'Watch Video'}</span>
+                  <span>{t('videos.watchVideo')}</span>
                 </button>
               </div>
             </div>
@@ -312,7 +309,7 @@ const Videos: React.FC = () => {
         {filteredVideos.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
-              {i18n.language === 'zh' ? '暂无该类别的视频内容' : 'No videos found in this category'}
+              {t('videos.noVideosFound')}
             </p>
           </div>
         )}

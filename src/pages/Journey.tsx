@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Plane, MapPin, Clock, Navigation, ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { 
@@ -24,6 +25,7 @@ interface JourneyData {
 }
 
 const Journey: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const [flightProgress, setFlightProgress] = useState(0);
@@ -38,16 +40,14 @@ const Journey: React.FC = () => {
   
   const journeyData = location.state as JourneyData;
 
-  // 城市名称标准化映射
+  // 城市名称标准化映射 - 移除不必要的映射，直接使用原始城市名称
   const normalizeCity = (cityName: string): string => {
-    const cityMapping: Record<string, string> = {
-      '额吉利海滩': '额布里海滩'
-    };
-    return cityMapping[cityName] || cityName;
+    // 不再进行名称转换，直接返回原始名称
+    return cityName;
   };
 
-  // 计算真实地理数据
-  const beijingCoords = getCityCoordinates('北京');
+  // 计算真实地理数据 - 支持中英文城市名称
+  const beijingCoords = getCityCoordinates('北京') || getCityCoordinates('Beijing');
   const normalizedCity = normalizeCity(journeyData?.city || '仰光');
   const destinationCoords = getCityCoordinates(normalizedCity);
   
@@ -562,10 +562,10 @@ const Journey: React.FC = () => {
       <div className="journey-header">
         <button onClick={() => navigate(-1)} className="back-button">
           <ArrowLeft size={20} />
-          返回
+          {t('journey.backButton')}
         </button>
         <h1 className="journey-title">
-          ✈️ AI启程 - 从北京出发
+          ✈️ {t('journey.title')}
         </h1>
       </div>
 
@@ -575,8 +575,8 @@ const Journey: React.FC = () => {
           <div className="city-info">
             <MapPin className="city-icon" />
             <div>
-              <h3>北京</h3>
-              <p>首都国际机场</p>
+              <h3>{t('cities.beijing')}</h3>
+              <p>{t('journey.departureAirport')}</p>
             </div>
           </div>
           
@@ -601,7 +601,7 @@ const Journey: React.FC = () => {
             <MapPin className="city-icon destination-icon" />
             <div>
               <h3>{journeyData.city}</h3>
-              <p>旅游目的地</p>
+              <p>{t('journey.destination')}</p>
             </div>
           </div>
         </div>
@@ -609,20 +609,20 @@ const Journey: React.FC = () => {
         <div className="flight-details">
           <div className="detail-item">
             <Clock size={16} />
-            <span>预估飞行时间: {formatFlightTime(flightTime)}</span>
+            <span>{t('journey.estimatedFlightTime')}: {formatFlightTime(flightTime)}</span>
           </div>
           <div className="detail-item">
             <Navigation size={16} />
-            <span>大致距离: {formatDistance(distance)}</span>
+            <span>{t('journey.approximateDistance')}: {formatDistance(distance)}</span>
           </div>
           <div className="detail-item">
             <span className="progress-text">
-              飞行进度: {Math.round(flightProgress)}%
+              {t('journey.flightProgress')}: {Math.round(flightProgress)}%
             </span>
           </div>
           <div className="detail-item">
             <span className="step-text">
-              步骤: {Math.min(currentStep + 1, flightPath.length)}/{flightPath.length}
+              {t('journey.step')}: {Math.min(currentStep + 1, flightPath.length)}/{flightPath.length}
             </span>
           </div>
         </div>
@@ -631,10 +631,10 @@ const Journey: React.FC = () => {
       {/* 实时位置显示面板 */}
       {isFlying && currentStep < flightPath.length && (
         <div className="real-time-position">
-          <h4>🛩️ 实时飞行位置</h4>
-          <p>纬度: {flightPath[currentStep]?.lat.toFixed(4)}</p>
-          <p>经度: {flightPath[currentStep]?.lng.toFixed(4)}</p>
-          <p>当前步骤: {currentStep + 1}/{flightPath.length}</p>
+          <h4>🛩️ {t('journey.realTimePosition')}</h4>
+          <p>{t('journey.latitude')}: {flightPath[currentStep]?.lat.toFixed(4)}</p>
+          <p>{t('journey.longitude')}: {flightPath[currentStep]?.lng.toFixed(4)}</p>
+          <p>{t('journey.currentStep')}: {currentStep + 1}/{flightPath.length}</p>
         </div>
       )}
 
@@ -652,13 +652,13 @@ const Journey: React.FC = () => {
               className="destination-image"
             />
             <div className="destination-content">
-              <h2>目的地: {journeyData.city}</h2>
+              <h2>{t('journey.destinationLabel')}: {journeyData.city}</h2>
               <p className="destination-description">
                 {journeyData.description}
               </p>
               
               <div className="activities-section">
-                <h3>推荐活动:</h3>
+                <h3>{t('journey.recommendedActivities')}:</h3>
                 <ul className="activities-list">
                   {journeyData.activities.map((activity, index) => (
                     <li key={index}>{activity}</li>
@@ -675,23 +675,23 @@ const Journey: React.FC = () => {
         {!isFlying && !hasArrived && (
           <button onClick={startJourney} className="start-journey-btn">
             <Plane size={20} />
-            开始飞行
+            {t('journey.startFlight')}
           </button>
         )}
         
         {isFlying && (
           <div className="flying-status">
             <div className="flying-animation">✈️</div>
-            <p>正在飞往 {journeyData.city}...</p>
-            <p>步骤: {Math.min(currentStep + 1, flightPath.length)}/{flightPath.length}</p>
+            <p>{t('journey.flyingTo')} {journeyData.city}...</p>
+            <p>{t('journey.step')}: {Math.min(currentStep + 1, flightPath.length)}/{flightPath.length}</p>
           </div>
         )}
 
         {hasArrived && (
           <div className="arrival-status">
             <div className="arrival-animation">🎉</div>
-            <p>已抵达 {journeyData.city}！</p>
-            <button onClick={() => navigate('/a')} className="reset-journey-btn">开始旅游</button>
+            <p>{t('journey.arrived')} {journeyData.city}！</p>
+            <button onClick={() => navigate('/a')} className="reset-journey-btn">{t('journey.startTourism')}</button>
           </div>
         )}
       </div>

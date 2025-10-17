@@ -13,10 +13,11 @@ import PersonalityResult from '../components/PersonalityResult';
 import Robot3D from '../components/Robot3D';
 
 interface QuizData {
-  birthday: string;
-  chineseZodiac: string;
-  westernZodiac: string;
-  mbti: string;
+  dayOfWeek?: string;
+  chineseZodiac?: string;
+  westernZodiac?: string;
+  mbti?: string;
+  category?: string;
 }
 
 const Recommendations: React.FC = () => {
@@ -119,7 +120,7 @@ const Recommendations: React.FC = () => {
           <h1 className="text-3xl font-bold mb-3">{t('recommendations.title')}</h1>
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
             <p className="text-base">
-              🤖 <strong>缅缅AI智能推荐：</strong>基于您的兴趣偏好和浏览历史，为您精心挑选最适合的缅甸文化体验！
+              <span dangerouslySetInnerHTML={{ __html: t('recommendations.smartRecommendation') }} />
             </p>
           </div>
         </div>
@@ -186,7 +187,7 @@ const Recommendations: React.FC = () => {
                 {recommendation.score && (
                   <div className="absolute bottom-3 left-3">
                     <span className="px-2 py-1 bg-green-600 text-white text-xs rounded-full">
-                      匹配度: {Math.round(recommendation.score)}%
+                      {t('recommendations.matchScore', { score: Math.round(recommendation.score) })}
                     </span>
                   </div>
                 )}
@@ -234,7 +235,7 @@ const Recommendations: React.FC = () => {
 
                 {/* Highlights */}
                 <div className="mb-3">
-                  <h4 className="text-sm font-medium text-gray-700 mb-1.5">亮点特色：</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-1.5">{t('recommendations.highlights')}</h4>
                   <div className="flex flex-wrap gap-1">
                     {(i18n.language === 'zh' ? recommendation.highlights : recommendation.highlightsEn)
                       .slice(0, 2)
@@ -250,7 +251,7 @@ const Recommendations: React.FC = () => {
                 {recommendation.reasons && recommendation.reasons.length > 0 && (
                   <div className="mb-3 p-2 bg-green-50 rounded">
                     <p className="text-[11px] text-green-700">
-                      <span className="font-medium">推荐理由：</span>
+                      <span className="font-medium">{t('recommendations.reasons')}</span>
                       {recommendation.reasons.slice(0, 2).join('，')}
                     </p>
                   </div>
@@ -271,8 +272,8 @@ const Recommendations: React.FC = () => {
             <div className="text-gray-400 mb-4">
               <MapPin className="w-16 h-16 mx-auto" />
             </div>
-            <h3 className="text-base font-medium text-gray-600 mb-2">暂无推荐内容</h3>
-            <p className="text-gray-500 text-sm">请尝试选择其他分类或调整筛选条件</p>
+            <h3 className="text-base font-medium text-gray-600 mb-2">{t('recommendations.noRecommendations')}</h3>
+            <p className="text-gray-500 text-sm">{t('recommendations.tryOtherCategories')}</p>
           </div>
         )}
       </div>

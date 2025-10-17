@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import personalityData from '../data/personalityMatching.json';
 import './PersonalityResult.css';
+import { useTranslation } from 'react-i18next';
 
 interface QuizData {
   dayOfWeek?: string;
@@ -21,32 +22,43 @@ interface BaseRecommendation {
   city: string;
   cityEn: string;
   description: string;
+  descriptionEn?: string;
   activities: string[];
+  activitiesEn?: string[];
   image: string;
 }
 
 interface MBTIRecommendation extends BaseRecommendation {
   personality: string;
+  personalityEn?: string;
 }
 
 interface ZodiacRecommendation extends BaseRecommendation {
   personality: string;
+  personalityEn?: string;
 }
 
 interface ChineseZodiacRecommendation extends BaseRecommendation {
   trait: string;
+  traitEn?: string;
   recommendation: string;
+  recommendationEn?: string;
 }
 
 interface DayOfWeekRecommendation extends BaseRecommendation {
   trait?: string;
+  traitEn?: string;
   personality?: string;
-}
+  personalityEn?: string;
+  recommendation?: string;
+  recommendationEn?: string;
+} 
 
 type RecommendationResult = MBTIRecommendation | ZodiacRecommendation | ChineseZodiacRecommendation | DayOfWeekRecommendation;
 
 const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetake }) => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
   // 处理开始出发按钮点击
   const handleExplore = () => {
@@ -58,64 +70,165 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
         '蒲甘': 'bagan',
         '曼德勒': 'mandalay',
         '茵莱湖': 'inle-lake',
-        '额布里海滩': 'ngapali'
+        '额吉利海滩': 'ngapali'
       };
       try {
         const slug = cityToSlug[result.city] || cityToSlug[result.cityEn] || 'yangon';
         localStorage.setItem('recommendedCitySlug', slug);
       } catch {}
 
+      // 获取城市名称（根据语言环境）
+      const isEnglish = i18n.language === 'en';
+      const cityName = isEnglish ? result.cityEn : result.city;
+      const description = isEnglish && result.descriptionEn ? result.descriptionEn : result.description;
+      const activities = isEnglish && result.activitiesEn ? result.activitiesEn : result.activities;
+
       // 传递推荐城市信息到Journey页面
       navigate('/journey', {
         state: {
-          city: result.city,
-          description: result.description,
-          activities: result.activities,
+          city: cityName,
+          description: description,
+          activities: activities,
           image: result.image
         }
       });
     }
   };
+  
+  // 添加映射对象，将英文选项值转换为中文键名
+  const chineseZodiacMapping: { [key: string]: string } = {
+    'Rat': '鼠',
+    'Ox': '牛', 
+    'Tiger': '虎',
+    'Rabbit': '兔',
+    'Dragon': '龙',
+    'Snake': '蛇',
+    'Horse': '马',
+    'Goat': '羊',
+    'Monkey': '猴',
+    'Rooster': '鸡',
+    'Dog': '狗',
+    'Pig': '猪'
+  };
 
-  // 根据选择的类别获取相应的推荐结果
-  // 获取个性特质的辅助函数
-  const getPersonalityTrait = (result: RecommendationResult): string => {
-    if ('personality' in result && result.personality) {
-      return result.personality;
-    }
-    if ('trait' in result && result.trait) {
-      return result.trait;
-    }
-    return '未知特质';
+  const westernZodiacMapping: { [key: string]: string } = {
+    'Aries': '白羊座',
+    'Taurus': '金牛座',
+    'Gemini': '双子座',
+    'Cancer': '巨蟹座',
+    'Leo': '狮子座',
+    'Virgo': '处女座',
+    'Libra': '天秤座',
+    'Scorpio': '天蝎座',
+    'Sagittarius': '射手座',
+    'Capricorn': '摩羯座',
+    'Aquarius': '水瓶座',
+    'Pisces': '双鱼座'
+  };
+
+  const dayOfWeekMapping: { [key: string]: string } = {
+    'Monday 🐅 Tiger': '周一 🐅 老虎',
+    'Tuesday 🦁 Lion': '周二 🦁 狮子',
+    'Wednesday 🐘 Elephant': '周三 🐘 象',
+    'Thursday 🐀 Rat': '周四 🐀 老鼠',
+    'Friday 🐹 Guinea Pig': '周五 🐹 豚鼠',
+    'Saturday 🐉 Dragon': '周六 🐉 龙',
+    'Sunday 🦅 Bird-headed Guardian': '周日 🦅 人身鸟首'
   };
 
   const getRecommendationResult = (): RecommendationResult | null => {
+    console.log('PersonalityResult - quizData:', quizData);
+    console.log('PersonalityResult - category:', quizData.category);
+    console.log('PersonalityResult - personalityData keys:', Object.keys(personalityData));
+    
+    let value: string;
+    let dataKey: string;
+    
     switch (quizData.category) {
       case 'mbti':
-        return personalityData.mbtiMatching[quizData.mbti as keyof typeof personalityData.mbtiMatching] as MBTIRecommendation;
+        value = quizData.mbti || '';
+        dataKey = 'mbtiMatching';
+        console.log('MBTI - value:', value, 'available keys:', Object.keys(personalityData.mbtiMatching || {}));
+        break;
       case 'westernZodiac':
-        return personalityData.zodiacMatching[quizData.westernZodiac as keyof typeof personalityData.zodiacMatching] as ZodiacRecommendation;
+        value = quizData.westernZodiac || '';
+        // 将英文星座名转换为中文
+        const chineseZodiacValue = westernZodiacMapping[value] || value;
+        value = chineseZodiacValue;
+        dataKey = 'zodiacMatching';
+        console.log('Western Zodiac - original value:', quizData.westernZodiac, 'mapped value:', value, 'available keys:', Object.keys(personalityData.zodiacMatching || {}));
+        break;
       case 'chineseZodiac':
-        return personalityData.chineseZodiacMatching[quizData.chineseZodiac as keyof typeof personalityData.chineseZodiacMatching] as ChineseZodiacRecommendation;
+        value = quizData.chineseZodiac || '';
+        // 将英文生肖名转换为中文
+        const chineseValue = chineseZodiacMapping[value] || value;
+        value = chineseValue;
+        dataKey = 'chineseZodiacMatching';
+        console.log('Chinese Zodiac - original value:', quizData.chineseZodiac, 'mapped value:', value, 'available keys:', Object.keys(personalityData.chineseZodiacMatching || {}));
+        break;
       case 'dayOfWeek':
-        return personalityData.dayOfWeekMatching[quizData.dayOfWeek as keyof typeof personalityData.dayOfWeekMatching] as DayOfWeekRecommendation;
+        value = quizData.dayOfWeek || '';
+        // 将英文七日生肖转换为中文
+        const chineseDayValue = dayOfWeekMapping[value] || value;
+        value = chineseDayValue;
+        dataKey = 'dayOfWeekMatching';
+        console.log('Day of Week - original value:', quizData.dayOfWeek, 'mapped value:', value, 'available keys:', Object.keys(personalityData.dayOfWeekMatching || {}));
+        break;
       default:
+        console.log('Unknown category:', quizData.category);
         return null;
     }
+
+    const categoryData = personalityData[dataKey as keyof typeof personalityData];
+    const result = categoryData?.[value as keyof typeof categoryData];
+    console.log('Final result:', result);
+    
+    return result || null;
   };
 
+  // 获取个性特质的辅助函数
+  const getPersonalityTrait = (result: RecommendationResult): string => {
+    const isEnglish = i18n.language === 'en';
+    
+    if ('personality' in result && result.personality) {
+      return isEnglish && result.personalityEn ? result.personalityEn : result.personality;
+    }
+    if ('trait' in result && result.trait) {
+      return isEnglish && result.traitEn ? result.traitEn : result.trait;
+    }
+    return t('personalityResult.unknownTrait');
+  };
+
+  // 获取城市名称的辅助函数
+  const getCityName = (result: RecommendationResult): string => {
+    const isEnglish = i18n.language === 'en';
+    return isEnglish ? result.cityEn : result.city;
+  };
+
+  // 获取描述文本的辅助函数
+  const getDescription = (result: RecommendationResult): string => {
+    const isEnglish = i18n.language === 'en';
+    return isEnglish && result.descriptionEn ? result.descriptionEn : result.description;
+  };
+
+  // 获取活动列表的辅助函数
+  const getActivities = (result: RecommendationResult): string[] => {
+    const isEnglish = i18n.language === 'en';
+    return isEnglish && result.activitiesEn ? result.activitiesEn : result.activities;
+  };
+  
   const result = getRecommendationResult();
   
   if (!result) {
-    return <div>无法获取推荐结果</div>;
+    return <div>{t('personalityResult.noResult')}</div>;
   }
 
   return (
     <div className="personality-result">
       <div className="result-container">
         <div className="result-header">
-          <h2>🎯 你的专属缅甸文化推荐</h2>
-          <p>基于你的个性分析，我们为你精心挑选了最适合的城市文化体验</p>
+          <h2>{t('personalityResult.header.title')}</h2>
+          <p>{t('personalityResult.header.description')}</p>
         </div>
 
         {/* 主要内容区域 - 左右布局 */}
@@ -124,7 +237,7 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
           <div className="left-section">
             <div className="recommendation-card primary">
               <div className="card-header">
-                 <h3>🏛️ 为你推荐的城市</h3>
+                 <h3>{t('personalityResult.left.recommendedCityTitle')}</h3>
                  <span className="personality-badge">{getPersonalityTrait(result)}</span>
                </div>
               
@@ -138,15 +251,20 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
                 </div>
                 
                 <div className="city-description">
-                  <p className="description-text">{result.description}</p>
+                  <p className="description-text">{getDescription(result)}</p>
                   
                   <div className="activities">
-                    <h5>🎨 推荐体验</h5>
+                    <h5>{t('personalityResult.activities.title')}</h5>
                     <div className="activity-tags">
-                      {result.activities.map((activity, index) => (
+                      {getActivities(result).map((activity, index) => (
                         <span key={index} className="activity-tag">{activity}</span>
                       ))}
                     </div>
+                  </div>
+                  
+                  <div className="personality-trait">
+                    <h5>{t('personalityResult.personalityTrait')}</h5>
+                    <p>{getPersonalityTrait(result)}</p>
                   </div>
                 </div>
               </div>
@@ -159,10 +277,10 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
             <div className="recommendation-card secondary">
               <div className="card-header">
                 <h3>
-                  {quizData.category === 'mbti' && '🧠 MBTI 人格分析'}
-                  {quizData.category === 'westernZodiac' && '⭐ 星座专属活动'}
-                  {quizData.category === 'chineseZodiac' && '🐉 生肖文化洞察'}
-                  {quizData.category === 'dayOfWeek' && '🐅 缅甸七日生肖特质'}
+                  {quizData.category === 'mbti' && t('personalityResult.categoryTitles.mbti')}
+                  {quizData.category === 'westernZodiac' && t('personalityResult.categoryTitles.westernZodiac')}
+                  {quizData.category === 'chineseZodiac' && t('personalityResult.categoryTitles.chineseZodiac')}
+                  {quizData.category === 'dayOfWeek' && t('personalityResult.categoryTitles.dayOfWeek')}
                 </h3>
                 <span className="category-badge">
                   {quizData.category === 'mbti' && quizData.mbti}
@@ -174,28 +292,28 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
               
               <div className="category-content">
                  <div className="trait-highlight">
-                   <span className="trait-label">个性特质：</span>
+                   <span className="trait-label">{t('personalityResult.traitLabel')}</span>
                    <span className="trait-value">{getPersonalityTrait(result)}</span>
                  </div>
-                 <p className="recommendation-text">{result.description}</p>
+                 <p className="recommendation-text">{getDescription(result)}</p>
                </div>
             </div>
 
             {/* 个人信息总结 */}
             <div className="personal-summary">
-              <h3>📊 你的个性档案</h3>
+              <h3>{t('personalityResult.summary.title')}</h3>
               <div className="summary-grid">
                 <div className="summary-item">
-                  <span className="summary-label">选择类别</span>
+                  <span className="summary-label">{t('personalityResult.summary.categoryLabel')}</span>
                   <span className="summary-value">
-                    {quizData.category === 'mbti' && 'MBTI 人格类型'}
-                    {quizData.category === 'westernZodiac' && '西方星座'}
-                    {quizData.category === 'chineseZodiac' && '中国生肖'}
-                    {quizData.category === 'dayOfWeek' && '缅甸七日生肖'}
+                    {quizData.category === 'mbti' && t('personalityResult.categoryTitles.mbti')}
+                    {quizData.category === 'westernZodiac' && t('personalityResult.categoryTitles.westernZodiac')}
+                    {quizData.category === 'chineseZodiac' && t('personalityResult.categoryTitles.chineseZodiac')}
+                    {quizData.category === 'dayOfWeek' && t('personalityResult.categoryTitles.dayOfWeek')}
                   </span>
                 </div>
                 <div className="summary-item">
-                  <span className="summary-label">你的选择</span>
+                  <span className="summary-label">{t('personalityResult.summary.choiceLabel')}</span>
                   <span className="summary-value">
                     {quizData.category === 'mbti' && quizData.mbti}
                     {quizData.category === 'westernZodiac' && quizData.westernZodiac}
@@ -204,11 +322,11 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
                   </span>
                 </div>
                 <div className="summary-item">
-                  <span className="summary-label">推荐城市</span>
-                  <span className="summary-value">{result.city}</span>
+                  <span className="summary-label">{t('personalityResult.summary.cityLabel')}</span>
+                  <span className="summary-value">{getCityName(result)}</span>
                 </div>
                 <div className="summary-item">
-                   <span className="summary-label">个性特质</span>
+                   <span className="summary-label">{t('personalityResult.summary.traitLabel')}</span>
                    <span className="summary-value">{getPersonalityTrait(result)}</span>
                  </div>
               </div>
@@ -220,11 +338,11 @@ const PersonalityResult: React.FC<PersonalityResultProps> = ({ quizData, onRetak
         <div className="action-buttons">
           <button className="retake-btn" onClick={onRetake}>
             <span className="btn-icon">🔄</span>
-            重新测试
+            {t('personalityResult.buttons.retake')}
           </button>
           <button className="explore-btn" onClick={handleExplore}>
             <span className="btn-icon">✈️</span>
-            开始出发
+            {t('personalityResult.buttons.explore')}
           </button>
         </div>
       </div>

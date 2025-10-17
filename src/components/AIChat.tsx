@@ -82,7 +82,7 @@ const AIChat: React.FC = () => {
             <span className="text-red-600 font-bold text-sm">🤖</span>
           </div>
           <div>
-            <h3 className="text-white font-semibold">缅缅AI助手 (MianMian AI)</h3>
+            <h3 className="text-white font-semibold">{t('ai.assistant')}</h3>
             <p className="text-orange-100 text-xs">您的专属缅甸文化智能导游</p>
           </div>
           <div className="ml-auto">

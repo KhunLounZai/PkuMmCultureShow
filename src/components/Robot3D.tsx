@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './Robot3D.css';
 
 interface Robot3DProps {
@@ -8,6 +9,7 @@ interface Robot3DProps {
 }
 
 const Robot3D: React.FC<Robot3DProps> = ({ message, showBubble = true }) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const [bubbleVisible, setBubbleVisible] = useState(false);
   const [position, setPosition] = useState({ x: 20, y: 20 }); // 相对于右下角的位置
@@ -20,19 +22,19 @@ const Robot3D: React.FC<Robot3DProps> = ({ message, showBubble = true }) => {
   const getDefaultMessage = () => {
     switch (location.pathname) {
       case '/':
-        return '👋 哈喽！我是缅缅AI！输入你的星座、MBTI等特征，我来为你推荐最适合的缅甸旅游地点！';
+        return t('ai.homeGreeting');
       case '/recommendations':
-        return '🎯 让我来了解你的喜好！请选择一个类别，我会为你量身定制专属的缅甸文化体验推荐！';
+        return t('ai.recommendationsGreeting');
       case '/map':
-        return '🗺️ 欢迎来到智能地图！点击任意城市，我会为你介绍当地的文化特色和必游景点！';
+        return t('ai.mapGreeting');
       case '/videos':
-        return '🎬 准备好沉浸式体验了吗？选择一个视频，让我带你身临其境地感受缅甸的美丽风光！';
+        return t('ai.videosGreeting');
       case '/journey':
-        return '✈️ 你的缅甸之旅即将开始！跟随我的指引，探索这个神秘国度的文化宝藏吧！';
+        return t('ai.journeyGreeting');
       case '/a':
-        return '🌟 欢迎来到虚拟旅行体验！选择一个目的地，我会为你开启一段难忘的文化之旅！';
+        return t('ai.aPageGreeting');
       default:
-        return '😊 嗨！我是你的专属缅甸文化导游缅缅AI，有什么可以帮助你的吗？';
+        return t('ai.defaultGreeting');
     }
   };
 

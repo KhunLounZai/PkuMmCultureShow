@@ -1,26 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import Robot3D from '../components/Robot3D';
 
 const A: React.FC = () => {
+  const { t } = useTranslation();
   const cardBase = 'w-64 h-40 shrink-0 rounded-2xl shadow-lg border border-white/20 overflow-hidden bg-white/90 backdrop-blur';
   const sectionTitle = 'text-lg font-bold text-gray-900';
   const sectionDesc = 'text-gray-500 text-xs';
   const carouselBase = 'flex gap-4 overflow-x-auto px-2 py-2';
 
   const postcards = [
-    { title: '来自北京的问候', subtitle: '首都风情', emoji: '📮' },
-    { title: '仰光的一封信', subtitle: '大金塔之光', emoji: '✉️' },
-    { title: '蒲甘的晨曦', subtitle: '万塔之城', emoji: '🌅' },
-    { title: '茵莱湖的水上生活', subtitle: '水上村庄', emoji: '🌊' },
+    { title: t('aPage.postcardTitles.beijing'), subtitle: t('aPage.postcardSubtitles.beijing'), emoji: '📮' },
+    { title: t('aPage.postcardTitles.yangon'), subtitle: t('aPage.postcardSubtitles.yangon'), emoji: '✉️' },
+    { title: t('aPage.postcardTitles.bagan'), subtitle: t('aPage.postcardSubtitles.bagan'), emoji: '🌅' },
+    { title: t('aPage.postcardTitles.inleLake'), subtitle: t('aPage.postcardSubtitles.inleLake'), emoji: '🌊' },
   ];
 
   const videos = [
-    { title: '缅甸文化速览', duration: '4:32', image: 'https://placehold.co/600x400?text=Myanmar+Culture' },
-    { title: '蒲甘航拍之旅', duration: '6:05', image: 'https://placehold.co/600x400?text=Bagan+Drone' },
-    { title: '仰光城市漫游', duration: '5:12', image: 'https://placehold.co/600x400?text=Yangon+City' },
-    { title: '茵莱湖水上生活', duration: '3:48', image: 'https://placehold.co/600x400?text=Inle+Lake+Life' },
+    { title: t('aPage.videoTitles.culture'), duration: '4:32', image: 'https://placehold.co/600x400?text=Myanmar+Culture' },
+    { title: t('aPage.videoTitles.bagan'), duration: '6:05', image: 'https://placehold.co/600x400?text=Bagan+Drone' },
+    { title: t('aPage.videoTitles.yangon'), duration: '5:12', image: 'https://placehold.co/600x400?text=Yangon+City' },
+    { title: t('aPage.videoTitles.inleLake'), duration: '3:48', image: 'https://placehold.co/600x400?text=Inle+Lake+Life' },
   ];
 
   // 缅甸 5 城市明信片（正面/背面）存放路径
@@ -32,7 +34,7 @@ const A: React.FC = () => {
       front: '/images/postcards/yangon-front.png', 
       back: '/images/postcards/yangon-back.png',
       coordinates: { lat: 16.8661, lng: 96.1951 }, // 真实地理坐标
-      description: '缅甸最大城市，经济中心'
+      description: t('aPage.cityDescriptions.yangon')
     },
     { 
       city: '蒲甘', 
@@ -41,7 +43,7 @@ const A: React.FC = () => {
       front: '/images/postcards/bagan-front.png', 
       back: '/images/postcards/bagan-back.png',
       coordinates: { lat: 21.1717, lng: 94.8574 },
-      description: '万塔之城，古代王朝遗址'
+      description: t('aPage.cityDescriptions.bagan')
     },
     { 
       city: '曼德勒', 
@@ -50,7 +52,7 @@ const A: React.FC = () => {
       front: '/images/postcards/mandalay-front.png', 
       back: '/images/postcards/mandalay-back.png',
       coordinates: { lat: 21.9588, lng: 96.0891 },
-      description: '文化古都，皇宫所在地'
+      description: t('aPage.cityDescriptions.mandalay')
     },
     { 
       city: '茵莱湖', 
@@ -59,16 +61,16 @@ const A: React.FC = () => {
       front: '/images/postcards/inle-lake-front.png', 
       back: '/images/postcards/inle-lake-back.png',
       coordinates: { lat: 20.5792, lng: 96.9014 },
-      description: '高原湖泊，水上村庄'
+      description: t('aPage.cityDescriptions.inleLake')
     },
     { 
-      city: '额布里海滩', 
+      city: '额吉利海滩', 
       cityEn: 'Ngapali Beach', 
       slug: 'ngapali', 
       front: '/images/postcards/ngapali-front.png', 
       back: '/images/postcards/ngapali-back.png',
       coordinates: { lat: 18.8050, lng: 94.3372 },
-      description: '美丽海滩，度假胜地'
+      description: t('aPage.cityDescriptions.ngapali')
     },
   ];
 
@@ -233,6 +235,11 @@ const A: React.FC = () => {
         </div>
       `);
 
+      // 点击弹出窗口时也触发城市选择
+      marker.on('popupopen', () => {
+        handleCityClick(city.slug);
+      });
+
       // 点击事件
       marker.on('click', () => {
         handleCityClick(city.slug);
@@ -312,15 +319,15 @@ const A: React.FC = () => {
           <section>
             <div className="flex items-end justify-between mb-4">
               <div>
-                <h2 className={sectionTitle}>获取推荐城市明信片</h2>
-                <p className={sectionDesc}>请跟工作人员获取实体卡</p>
+                <h2 className={sectionTitle}>{t('aPage.postcardTitle')}</h2>
+                <p className={sectionDesc}>{t('aPage.postcardDescription')}</p>
               </div>
             </div>
             {/* 正反面图片 */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* 正面 */}
               <div className="rounded-2xl shadow-lg border border-white/20 overflow-hidden bg-white/90">
-                <div className="px-3 py-2 border-b text-gray-700 text-xs">正面 Front</div>
+                <div className="px-3 py-2 border-b text-gray-700 text-xs">{t('aPage.frontSide')}</div>
                 <div className="w-full h-64 flex items-center justify-center bg-white">
                   <img
                     src={activePostcard.front}
@@ -336,7 +343,7 @@ const A: React.FC = () => {
               </div>
               {/* 背面 */}
               <div className="rounded-2xl shadow-lg border border-white/20 overflow-hidden bg-white/90">
-                <div className="px-3 py-2 border-b text-gray-700 text-xs">背面 Back</div>
+                <div className="px-3 py-2 border-b text-gray-700 text-xs">{t('aPage.backSide')}</div>
                 <div className="w-full h-64 flex items-center justify-center bg-white">
                   <img
                     src={activePostcard.back}
@@ -357,15 +364,15 @@ const A: React.FC = () => {
           <section>
             <div className="flex items-end justify-between mb-4">
               <div>
-                <h2 className={sectionTitle}>缅甸城市地图与8秒Ai旅游视频</h2>
-                <p className={sectionDesc}>点击地图上的城市标记查看对应的旅游视频</p>
+                <h2 className={sectionTitle}>{t('aPage.mapVideoTitle')}</h2>
+                <p className={sectionDesc}>{t('aPage.mapVideoDescription')}</p>
               </div>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* 左侧：交互式地图 */}
               <div className="rounded-2xl shadow-lg border border-white/20 overflow-hidden bg-white/90 backdrop-blur">
-                <div className="px-4 py-3 border-b text-gray-700 text-sm font-medium">缅甸地图</div>
+                <div className="px-4 py-3 border-b text-gray-700 text-sm font-medium">{t('aPage.mapTitle')}</div>
                 <div className="relative w-full h-96">
                   <div 
                     ref={mapRef} 
@@ -377,11 +384,11 @@ const A: React.FC = () => {
                   <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur rounded-lg p-3 text-xs z-10">
                     <div className="flex items-center gap-2 mb-1">
                       <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-                      <span>城市位置</span>
+                      <span>{t('aPage.cityLocation')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full bg-red-600"></div>
-                      <span>当前选中</span>
+                      <span>{t('aPage.currentSelected')}</span>
                     </div>
                   </div>
                 </div>

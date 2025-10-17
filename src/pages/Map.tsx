@@ -79,11 +79,11 @@ const Map: React.FC = () => {
   ];
 
   const categories = [
-    { id: 'all', label: '全部', labelEn: 'All', icon: Star, color: 'bg-gray-500' },
-    { id: 'cultural', label: '文化', labelEn: 'Cultural', icon: Camera, color: 'bg-purple-500' },
-    { id: 'natural', label: '自然', labelEn: 'Natural', icon: TreePine, color: 'bg-green-500' },
-    { id: 'adventure', label: '冒险', labelEn: 'Adventure', icon: Mountain, color: 'bg-orange-500' },
-    { id: 'spiritual', label: '心灵', labelEn: 'Spiritual', icon: Waves, color: 'bg-blue-500' }
+    { id: 'all', label: t('mapPage.categories.all'), icon: Star, color: 'bg-gray-500' },
+    { id: 'cultural', label: t('mapPage.categories.cultural'), icon: Camera, color: 'bg-purple-500' },
+    { id: 'natural', label: t('mapPage.categories.natural'), icon: TreePine, color: 'bg-green-500' },
+    { id: 'adventure', label: t('mapPage.categories.adventure'), icon: Mountain, color: 'bg-orange-500' },
+    { id: 'spiritual', label: t('mapPage.categories.spiritual'), icon: Waves, color: 'bg-blue-500' }
   ];
 
   const filteredLocations = selectedCategory === 'all' 
@@ -113,7 +113,7 @@ const Map: React.FC = () => {
           </p>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3 max-w-3xl mx-auto">
             <p className="text-base text-blue-800">
-              🗺️ <strong>缅缅AI智能导航：</strong>根据您的位置和兴趣，智能推荐最佳游览路线和必访景点！
+              <span dangerouslySetInnerHTML={{ __html: t('map.smartNavigation') }} />
             </p>
           </div>
         </div>
@@ -134,7 +134,7 @@ const Map: React.FC = () => {
                 }`}
               >
                 <Icon size={18} />
-                <span>{i18n.language === 'zh' ? category.label : category.labelEn}</span>
+                <span>{category.label}</span>
               </button>
             );
           })}
@@ -146,7 +146,7 @@ const Map: React.FC = () => {
             <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
               {/* Map Header */}
               <div className="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-4">
-                <h3 className="text-white font-semibold text-lg">缅甸文化地图 Myanmar Cultural Map</h3>
+                <h3 className="text-white font-semibold text-lg">{t('mapPage.title')}</h3>
               </div>
               
               {/* Interactive Map Placeholder */}
@@ -171,14 +171,14 @@ const Map: React.FC = () => {
                 
                 {/* Map Legend */}
                 <div className="absolute bottom-4 left-4 bg-white/90 rounded-lg p-3 shadow-lg">
-                  <h4 className="font-semibold text-sm mb-2">图例 Legend</h4>
+                  <h4 className="font-semibold text-sm mb-2">{t('mapPage.legend')}</h4>
                   <div className="space-y-1">
                     {categories.slice(1).map((category) => {
                       const Icon = category.icon;
                       return (
                         <div key={category.id} className="flex items-center space-x-2 text-xs">
                           <div className={`w-3 h-3 rounded-full ${category.color}`}></div>
-                          <span>{i18n.language === 'zh' ? category.label : category.labelEn}</span>
+                          <span>{category.label}</span>
                         </div>
                       );
                     })}
@@ -216,10 +216,7 @@ const Map: React.FC = () => {
                   
                   <div className="flex items-center space-x-2 mb-4">
                     <span className={`px-2 py-1 rounded-full text-xs text-white ${getCategoryColor(selectedLocation.category)}`}>
-                      {selectedLocation.category === 'cultural' && (i18n.language === 'zh' ? '文化' : 'Cultural')}
-                      {selectedLocation.category === 'natural' && (i18n.language === 'zh' ? '自然' : 'Natural')}
-                      {selectedLocation.category === 'adventure' && (i18n.language === 'zh' ? '冒险' : 'Adventure')}
-                      {selectedLocation.category === 'spiritual' && (i18n.language === 'zh' ? '心灵' : 'Spiritual')}
+                      {t(`mapPage.categories.${selectedLocation.category}`)}
                     </span>
                   </div>
                   
@@ -232,12 +229,10 @@ const Map: React.FC = () => {
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 text-center">
                 <Info className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {i18n.language === 'zh' ? '选择一个地点' : 'Select a Location'}
+                  {t('mapPage.selectLocation')}
                 </h3>
                 <p className="text-gray-600">
-                  {i18n.language === 'zh' 
-                    ? '点击地图上的标记来查看详细信息' 
-                    : 'Click on a marker on the map to view details'}
+                  {t('mapPage.clickMapInfo')}
                 </p>
               </div>
             )}
@@ -245,7 +240,7 @@ const Map: React.FC = () => {
             {/* Location List */}
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                {i18n.language === 'zh' ? '热门地点' : 'Popular Locations'}
+                {t('mapPage.popularLocations')}
               </h3>
               <div className="space-y-3">
                 {filteredLocations.map((location) => (

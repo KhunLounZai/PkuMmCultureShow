@@ -13,7 +13,15 @@ export const CITY_COORDINATES: Record<string, CityCoordinates> = {
   '蒲甘': { lat: 21.1717, lng: 94.8574, name: '蒲甘' },
   '曼德勒': { lat: 21.9588, lng: 96.0891, name: '曼德勒' },
   '茵莱湖': { lat: 20.5792, lng: 96.9019, name: '茵莱湖' },
-  '额布里海滩': { lat: 18.3050, lng: 94.4251, name: '额布里海滩' }
+  '额布里海滩': { lat: 18.3050, lng: 94.4251, name: '额布里海滩' },
+  '额吉利海滩': { lat: 18.3050, lng: 94.4251, name: '额吉利海滩' },
+  // 英文城市名称映射
+  'Beijing': { lat: 39.9042, lng: 116.4074, name: 'Beijing' },
+  'Yangon': { lat: 16.8661, lng: 96.1951, name: 'Yangon' },
+  'Bagan': { lat: 21.1717, lng: 94.8574, name: 'Bagan' },
+  'Mandalay': { lat: 21.9588, lng: 96.0891, name: 'Mandalay' },
+  'Inle Lake': { lat: 20.5792, lng: 96.9019, name: 'Inle Lake' },
+  'Ngapali Beach': { lat: 18.3050, lng: 94.4251, name: 'Ngapali Beach' }
 };
 
 // 将角度转换为弧度
