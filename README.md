@@ -1,5 +1,11 @@
 # Myanmar Culture Show Platform
 
+## Video Demonstration
+
+<video src="./public/images/demon/demon.mp4" controls="controls" width="100%">
+  Your browser does not support the video tag.
+</video>
+
 ## Project Overview
 
 The Myanmar Culture Show Platform is a modern web application built with React + TypeScript + Vite, designed to showcase Myanmar's rich cultural heritage, historical landscapes, and natural beauty through interactive experiences. The platform integrates a personalized recommendation system, interactive maps, multimedia content display, and AI flight simulation to provide users with an immersive exploration of Myanmar culture.
