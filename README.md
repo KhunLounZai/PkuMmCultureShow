@@ -88,7 +88,7 @@ The Myanmar Culture Show Platform is a modern web application built with React +
 
 1. **Clone the Project**
 ```bash
-git clone <repository-url>
+git clone https://github.com/KhunLounZai/PkuMmCultureShow.git
 cd PkuMmCultureShow
 ```
 
