@@ -2,7 +2,8 @@
 
 ## Video Demonstration
 
-<video src="./public/images/demon/demon.mp4" controls="controls" width="100%">
+<video controls width="100%">
+  <source src="./public/images/demon/demon.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
