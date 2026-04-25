@@ -2,10 +2,8 @@
 
 ## Video Demonstration
 
-<video controls width="100%">
-  <source src="./public/images/demon/demon.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+https://github.com/user-attachments/assets/ea90ebe2-420d-4cda-aef7-d567617405b6
+
 
 ## Project Overview
 
